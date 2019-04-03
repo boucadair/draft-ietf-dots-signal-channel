@@ -477,7 +477,8 @@ Internet-Draft        DOTS Signal Channel Protocol            April 2019
    Likewise, it is out of scope of this document to specify the behavior
    to be followed by a DOTS client to send DOTS requests when multiple
    DOTS servers are provisioned (e.g., contact all DOTS servers, select
-   one DOTS server among the list).
+   one DOTS server among the list).  Such behavior is specified in other
+   documents (e.g.  [I-D.ietf-dots-multihoming]).
 
 4.2.  CoAP URIs
 
@@ -497,7 +498,6 @@ Internet-Draft        DOTS Signal Channel Protocol            April 2019
          +-----------------------+----------------+-------------+
 
              Table 1: Operations and their Corresponding URIs
-
 
 
 
@@ -5132,8 +5132,8 @@ Internet-Draft        DOTS Signal Channel Protocol            April 2019
    Thanks to Christian Jacquenet, Roland Dobbins, Roman D.  Danyliw,
    Michael Richardson, Ehud Doron, Kaname Nishizuka, Dave Dolson, Liang
    Xia, Gilbert Clark, Xialiang Frank, Jim Schaad, Klaus Hartke,
-   Nesredien Suleiman, and Stephen Farrell for the discussion and
-   comments.
+   Nesredien Suleiman, Stephen Farrell, and Yoshifumi Nishida for the
+   discussion and comments.
 
    The authors would like to give special thanks to Kaname Nishizuka and
    Jon Shallow for their efforts in implementing the protocol and
@@ -5356,17 +5356,17 @@ Internet-Draft        DOTS Signal Channel Protocol            April 2019
               draft-ietf-dots-data-channel-28 (work in progress), March
               2019.
 
+   [I-D.ietf-dots-multihoming]
+              Boucadair, M. and R. K, "Multi-homing Deployment
+              Considerations for Distributed-Denial-of-Service Open
+              Threat Signaling (DOTS)", draft-ietf-dots-multihoming-01
+              (work in progress), January 2019.
+
    [I-D.ietf-dots-requirements]
               Mortensen, A., K, R., and R. Moskowitz, "Distributed
               Denial of Service (DDoS) Open Threat Signaling
               Requirements", draft-ietf-dots-requirements-22 (work in
               progress), March 2019.
-
-   [I-D.ietf-dots-use-cases]
-              Dobbins, R., Migault, D., Fouant, S., Moskowitz, R.,
-              Teague, N., Xia, L., and K. Nishizuka, "Use cases for DDoS
-              Open Threat Signaling", draft-ietf-dots-use-cases-17 (work
-              in progress), January 2019.
 
 
 
@@ -5377,6 +5377,12 @@ Reddy, et al.            Expires October 4, 2019               [Page 96]
 
 Internet-Draft        DOTS Signal Channel Protocol            April 2019
 
+
+   [I-D.ietf-dots-use-cases]
+              Dobbins, R., Migault, D., Fouant, S., Moskowitz, R.,
+              Teague, N., Xia, L., and K. Nishizuka, "Use cases for DDoS
+              Open Threat Signaling", draft-ietf-dots-use-cases-17 (work
+              in progress), January 2019.
 
    [I-D.ietf-tls-dtls13]
               Rescorla, E., Tschofenig, H., and N. Modadugu, "The
@@ -5421,18 +5427,17 @@ Internet-Draft        DOTS Signal Channel Protocol            April 2019
               RFC 4034, DOI 10.17487/RFC4034, March 2005,
               <https://www.rfc-editor.org/info/rfc4034>.
 
-   [RFC4122]  Leach, P., Mealling, M., and R. Salz, "A Universally
-              Unique IDentifier (UUID) URN Namespace", RFC 4122,
-              DOI 10.17487/RFC4122, July 2005,
-              <https://www.rfc-editor.org/info/rfc4122>.
-
-
 
 
 Reddy, et al.            Expires October 4, 2019               [Page 97]
 
 Internet-Draft        DOTS Signal Channel Protocol            April 2019
 
+
+   [RFC4122]  Leach, P., Mealling, M., and R. Salz, "A Universally
+              Unique IDentifier (UUID) URN Namespace", RFC 4122,
+              DOI 10.17487/RFC4122, July 2005,
+              <https://www.rfc-editor.org/info/rfc4122>.
 
    [RFC4340]  Kohler, E., Handley, M., and S. Floyd, "Datagram
               Congestion Control Protocol (DCCP)", RFC 4340,
@@ -5476,11 +5481,6 @@ Internet-Draft        DOTS Signal Channel Protocol            April 2019
               Clients to IPv4 Servers", RFC 6146, DOI 10.17487/RFC6146,
               April 2011, <https://www.rfc-editor.org/info/rfc6146>.
 
-   [RFC6234]  Eastlake 3rd, D. and T. Hansen, "US Secure Hash Algorithms
-              (SHA and SHA-based HMAC and HKDF)", RFC 6234,
-              DOI 10.17487/RFC6234, May 2011,
-              <https://www.rfc-editor.org/info/rfc6234>.
-
 
 
 
@@ -5489,6 +5489,11 @@ Reddy, et al.            Expires October 4, 2019               [Page 98]
 
 Internet-Draft        DOTS Signal Channel Protocol            April 2019
 
+
+   [RFC6234]  Eastlake 3rd, D. and T. Hansen, "US Secure Hash Algorithms
+              (SHA and SHA-based HMAC and HKDF)", RFC 6234,
+              DOI 10.17487/RFC6234, May 2011,
+              <https://www.rfc-editor.org/info/rfc6234>.
 
    [RFC6296]  Wasserman, M. and F. Baker, "IPv6-to-IPv6 Network Prefix
               Translation", RFC 6296, DOI 10.17487/RFC6296, June 2011,
@@ -5534,17 +5539,17 @@ Internet-Draft        DOTS Signal Channel Protocol            April 2019
               DOI 10.17487/RFC7589, June 2015,
               <https://www.rfc-editor.org/info/rfc7589>.
 
-   [RFC7858]  Hu, Z., Zhu, L., Heidemann, J., Mankin, A., Wessels, D.,
-              and P. Hoffman, "Specification for DNS over Transport
-              Layer Security (TLS)", RFC 7858, DOI 10.17487/RFC7858, May
-              2016, <https://www.rfc-editor.org/info/rfc7858>.
-
 
 
 Reddy, et al.            Expires October 4, 2019               [Page 99]
 
 Internet-Draft        DOTS Signal Channel Protocol            April 2019
 
+
+   [RFC7858]  Hu, Z., Zhu, L., Heidemann, J., Mankin, A., Wessels, D.,
+              and P. Hoffman, "Specification for DNS over Transport
+              Layer Security (TLS)", RFC 7858, DOI 10.17487/RFC7858, May
+              2016, <https://www.rfc-editor.org/info/rfc7858>.
 
    [RFC8305]  Schinazi, D. and T. Pauly, "Happy Eyeballs Version 2:
               Better Connectivity Using Concurrency", RFC 8305,
@@ -5586,11 +5591,6 @@ Authors' Addresses
    Cisco Systems, Inc.
 
    Email: praspati@cisco.com
-
-
-
-
-
 
 
 

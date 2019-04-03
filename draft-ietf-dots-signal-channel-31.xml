@@ -460,7 +460,9 @@
         <t>Likewise, it is out of scope of this document to specify the
         behavior to be followed by a DOTS client to send DOTS requests when
         multiple DOTS servers are provisioned (e.g., contact all DOTS servers,
-        select one DOTS server among the list).</t>
+        select one DOTS server among the list). Such behavior is specified in
+        other documents (e.g. <xref
+        target="I-D.ietf-dots-multihoming"></xref>). </t>
       </section>
 
       <section anchor="uri-path" title="CoAP URIs">
@@ -4484,7 +4486,8 @@ Note that:
       <t>Thanks to Christian Jacquenet, Roland Dobbins, Roman D. Danyliw,
       Michael Richardson, Ehud Doron, Kaname Nishizuka, Dave Dolson, Liang
       Xia, Gilbert Clark, Xialiang Frank, Jim Schaad, Klaus Hartke, Nesredien
-      Suleiman, and Stephen Farrell for the discussion and comments.</t>
+      Suleiman, Stephen Farrell, and Yoshifumi Nishida for the discussion and
+      comments.</t>
 
       <t>The authors would like to give special thanks to Kaname Nishizuka and
       Jon Shallow for their efforts in implementing the protocol and
@@ -4649,6 +4652,8 @@ Note that:
       <?rfc include='reference.RFC.8340'?>
 
       <?rfc include='reference.RFC.6838'?>
+
+      <?rfc include='reference.I-D.ietf-dots-multihoming'?>
 
       <?rfc include="reference.I-D.ietf-core-yang-cbor"?>
 
