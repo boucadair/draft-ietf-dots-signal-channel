@@ -530,9 +530,13 @@
         Eyeballs procedure are used by the DOTS client for sending its
         subsequent messages to the DOTS server. Note that the DOTS client
         after successfully establishing a connection MUST cache information
-        regarding the outcome of each connection attempt for a specific time
-        period, and it uses that information to avoid thrashing the network
-        with subsequent attempts.</t>
+        regarding the outcome of each connection attempt. The cached
+        information is flushed when its age exceeds a specific time period on
+        the order of few minutes (e.g., 10 mn). Typically, if the DOTS client
+        has to re-establish the connection with the same DOTS server within
+        few seconds after the Happy Eyeballs mechanism is completed, caching
+        avoids trashing the network especially in the presence of DDoS attack
+        traffic. </t>
 
         <t>The order of preference of the DOTS signal channel address family
         and transport protocol (most preferred first) is: UDP over IPv6, UDP
@@ -4692,5 +4696,26 @@ Note that:
         </front>
       </reference>
     </references>
+
+    <section anchor="motiv" title="CUID Generation">
+      <t>The document recommends the use of SPKI to generate the 'cuid'. This
+      design choice is motivated by the following reasons:<list
+          style="symbols">
+          <t>SPKI is globally unique. </t>
+
+          <t>It is deterministic. </t>
+
+          <t>It allows to avoid extra cycles that may be induced by 'cuid'
+          collision.</t>
+
+          <t>DOTS clients do not need to store the 'cuid' in a persistent
+          storage. </t>
+
+          <t>It allows to detect compromised DOTS clients that do not adhere
+          to the 'cuid' generation algorithm. </t>
+        </list></t>
+
+      <t></t>
+    </section>
   </back>
 </rfc>
