@@ -338,9 +338,9 @@
       <t>By default, a DOTS signal channel MUST run over port number TBD as
       defined in <xref target="port"></xref>, for both UDP and TCP, unless the
       DOTS server has a mutual agreement with its DOTS clients to use a
-      different port number. DOTS clients MAY alternatively support means to
+      different port number. DOTS clients MAY additionally support means to
       dynamically discover the ports used by their DOTS servers (e.g., <xref
-      target="I-D.boucadair-dots-server-discovery"></xref>). In order to use a
+      target="I-D.ietf-dots-server-discovery"></xref>). In order to use a
       distinct port number (as opposed to TBD), DOTS clients and servers
       SHOULD support a configurable parameter to supply the port number to
       use. The rationale for not using the default port number 5684 ((D)TLS
@@ -394,7 +394,7 @@
 
       <t>This document specifies a YANG module for representing DOTS
       mitigation scopes, DOTS signal channel session configuration data, and
-      DOTS redirected signalling (<xref target="YANG"></xref>). Representing
+      DOTS redirected signaling (<xref target="YANG"></xref>). Representing
       these data as CBOR data can either follow the rules in <xref
       target="I-D.ietf-core-yang-cbor"></xref> or those in <xref
       target="RFC7951"></xref> combined with JSON/CBOR conversion rules in
@@ -454,8 +454,8 @@
         <t>This document assumes that DOTS clients are provisioned with the
         reachability information of their DOTS server(s) using any of a
         variety of means (e.g., local configuration, or dynamic means such as
-        DHCP). The description of such means is out of scope of this
-        document.</t>
+        DHCP <xref target="I-D.ietf-dots-server-discovery"></xref>). The
+        description of such means is out of scope of this document.</t>
 
         <t>Likewise, it is out of scope of this document to specify the
         behavior to be followed by a DOTS client to send DOTS requests when
@@ -536,7 +536,7 @@
         has to re-establish the connection with the same DOTS server within
         few seconds after the Happy Eyeballs mechanism is completed, caching
         avoids trashing the network especially in the presence of DDoS attack
-        traffic. </t>
+        traffic.</t>
 
         <t>The order of preference of the DOTS signal channel address family
         and transport protocol (most preferred first) is: UDP over IPv6, UDP
@@ -569,13 +569,13 @@
 +-----------+                                           +-----------+
       |                                                       |
       |--DTLS ClientHello, IPv6 ---->X                        |
-      |--TCP SYN, IPv6-------------->X                        |
       |--DTLS ClientHello, IPv4 ---->X                        |
+      |--TCP SYN, IPv6-------------->X                        |
       |--TCP SYN, IPv4--------------------------------------->|
-      |--DTLS ClientHello, IPv6 ---->X                        |    
+      |--DTLS ClientHello, IPv6 ---->X                        |
+      |--DTLS ClientHello, IPv4 ---->X                        |
       |--TCP SYN, IPv6-------------->X                        |
       |<-TCP SYNACK-------------------------------------------|
-      |--DTLS ClientHello, IPv4 ---->X                        |
       |--TCP ACK--------------------------------------------->|
       |<------------Establish TLS Session-------------------->|
       |----------------DOTS signal--------------------------->|
@@ -623,10 +623,10 @@
         SHOULD use an even less aggressive rate whenever possible (case 2 in
         Section 3.1.3 of <xref target="RFC8085"></xref>).</t>
 
-        <t>JSON diagnostic notation is used to illustrate the various methods
-        defined in the following sub-sections. Also, the examples use the
-        Labels defined in Sections <xref format="counter" target="sc"></xref>,
-        <xref format="counter" target="cs"></xref>, <xref format="counter"
+        <t>JSON encoding is used to illustrate the various methods defined in
+        the following sub-sections. Also, the examples use the Labels defined
+        in Sections <xref format="counter" target="sc"></xref>, <xref
+        format="counter" target="cs"></xref>, <xref format="counter"
         target="cc"></xref>, and <xref format="counter"
         target="as"></xref>.</t>
 
@@ -652,6 +652,7 @@
   Uri-Path: "cuid=dz6pHjaADkaFTbjr0JGBpw"
   Uri-Path: "mid=123"
   Content-Format: "application/dots+cbor"
+
   {
     ...
   }
@@ -728,7 +729,11 @@
             </list></t>
 
           <t>'cuid' and 'mid' MUST NOT appear in the PUT request message body
-          (<xref target="Figure1c"></xref>).</t>
+          (<xref target="Figure1c"></xref>). The schema in <xref
+          target="Figure1c"></xref> uses the types defined in <xref
+          target="mapping"></xref>. Note that this figure (and other similar
+          figures depicting a schema) are non-normative sketches of the rough
+          structure of the message. </t>
 
           <t><figure anchor="Figure1c"
               title="PUT to Convey DOTS Mitigation Requests (Message Body Schema)">
@@ -775,14 +780,14 @@
               resources under attack. Prefixes are represented using Classless
               Inter-Domain Routing (CIDR) notation <xref
               target="RFC4632"></xref>. <vspace blankLines="0" />As a
-              reminder, the prefix length must be less than or equal to 32
-              (resp. 128) for IPv4 (resp. IPv6).<vspace blankLines="1" />The
-              prefix list MUST NOT include broadcast, loopback, or multicast
-              addresses. These addresses are considered as invalid values. In
-              addition, the DOTS server MUST validate that target prefixes are
-              within the scope of the DOTS client domain. Other validation
-              checks may be supported by DOTS servers.<vspace
-              blankLines="1" />This is an optional attribute.</t>
+              reminder, the prefix length must be less than or equal to 32 (or
+              128) for IPv4 (or IPv6).<vspace blankLines="1" />The prefix list
+              MUST NOT include broadcast, loopback, or multicast addresses.
+              These addresses are considered as invalid values. In addition,
+              the DOTS server MUST validate that target prefixes are within
+              the scope of the DOTS client domain. Other validation checks may
+              be supported by DOTS servers.<vspace blankLines="1" />This is an
+              optional attribute.</t>
 
               <t hangText="target-port-range:">A list of port numbers bound to
               resources under attack. <vspace blankLines="1" />A port range is
@@ -895,6 +900,7 @@
   Uri-Path: "cuid=dz6pHjaADkaFTbjr0JGBpw"
   Uri-Path: "mid=123"
   Content-Format: "application/dots+cbor"
+
   {
     ...
   }
@@ -974,10 +980,10 @@
           <t><xref target="Figure2"></xref> shows a PUT request example to
           signal that TCP port numbers 80, 8080, and 443 used by
           2001:db8:6401::1 and 2001:db8:6401::2 servers are under attack
-          (illustrated in JSON diagnostic notation). The presence of 'cdid'
-          indicates that a server-domain DOTS gateway has modified the initial
-          PUT request sent by the DOTS client. Note that 'cdid' MUST NOT
-          appear in the PUT request message body.</t>
+          (illustrated in JSON encoding). The presence of 'cdid' indicates
+          that a server-domain DOTS gateway has modified the initial PUT
+          request sent by the DOTS client. Note that 'cdid' MUST NOT appear in
+          the PUT request message body.</t>
 
           <t><figure anchor="Figure2"
               title="PUT for DOTS Mitigation Request (An Example)">
@@ -989,6 +995,7 @@
   Uri-Path: "cuid=dz6pHjaADkaFTbjr0JGBpw"
   Uri-Path: "mid=123"
   Content-Format: "application/dots+cbor"
+
   {
     "ietf-dots-signal-channel:mitigation-scope": {
       "scope": [
@@ -1113,7 +1120,8 @@
           'cuid' or 'mid' Uri-Path options, includes multiple 'scope'
           parameters, or contains invalid or unknown parameters, the DOTS
           server MUST reply with 4.00 (Bad Request). DOTS agents can safely
-          ignore comprehension-optional parameters they don't understand.</t>
+          ignore comprehension-optional parameters they don't understand
+          (<xref target="format"></xref>).</t>
 
           <t>A DOTS server that receives a mitigation request with a lifetime
           set to '0' MUST reply with a 4.00 (Bad Request).</t>
@@ -1349,16 +1357,36 @@
           server-domain DOTS gateways specified in <xref target="post"></xref>
           MUST be followed for GET requests.</t>
 
-          <t>The 'c' (content) parameter and its permitted values defined in
-          <xref target="I-D.ietf-core-comi"></xref> can be used to retrieve
-          non-configuration data (attack mitigation status), configuration
-          data, or both. The DOTS server MAY support this optional filtering
-          capability. It can safely ignore it if not supported. If the DOTS
-          client supports the optional filtering capability, it SHOULD use
-          &ldquo;c=n&rdquo; query (to get back only the dynamically changing
-          data) or &ldquo;c=c&rdquo; query (to get back the static
-          configuration values) when the DDoS attack is active to limit the
-          size of the response.</t>
+          <t>The 'c' Uri-Query option is used to control selection of
+          configuration and non-configuration data nodes. Concretely, the 'c'
+          (content) parameter and its permitted values defined in the
+          following table <xref target="I-D.ietf-core-comi"></xref> can be
+          used to retrieve non-configuration data (attack mitigation status),
+          configuration data, or both. The DOTS server MAY support this
+          optional filtering capability. It can safely ignore it if not
+          supported. If the DOTS client supports the optional filtering
+          capability, it SHOULD use &ldquo;c=n&rdquo; query (to get back only
+          the dynamically changing data) or &ldquo;c=c&rdquo; query (to get
+          back the static configuration values) when the DDoS attack is active
+          to limit the size of the response.</t>
+
+          <texttable>
+            <ttcol>Value</ttcol>
+
+            <ttcol>Description</ttcol>
+
+            <c>c</c>
+
+            <c>Return only configuration descendant data nodes</c>
+
+            <c>n</c>
+
+            <c>Return only non-configuration descendant data nodes</c>
+
+            <c>a</c>
+
+            <c> Return all descendant data nodes</c>
+          </texttable>
 
           <t>The DOTS client can use Block-wise transfer <xref
           target="RFC7959"></xref> to get the list of all its mitigations
@@ -1759,8 +1787,9 @@
    Uri-Path: "mitigate"
    Uri-Path: "cuid=dz6pHjaADkaFTbjr0JGBpw"
    Uri-Path: "mid=123"
-   Content-Format: "application/dots+cbor"
    If-Match: 
+   Content-Format: "application/dots+cbor"
+
    {
     "ietf-dots-signal-channel:mitigation-scope": {
       "scope": [
@@ -2233,6 +2262,7 @@
   Uri-Path: "config"
   Uri-Path: "sid=123"
   Content-Format: "application/dots+cbor"
+
   {
    ...
   }]]></artwork>
@@ -2325,6 +2355,7 @@
   Uri-Path: "config"
   Uri-Path: "sid=123"
   Content-Format: "application/dots+cbor"
+
   {
     "ietf-dots-signal-channel:signal-config": {
       "mitigating-config": {
@@ -2562,8 +2593,10 @@
         has already communicated with within the last five (5) minutes, it
         MUST ignore the redirection and try to contact other DOTS servers
         listed in the local configuration or discovered using dynamic means
-        such as DHCP or SRV procedures. It is RECOMMENDED that DOTS clients
-        support means to alert administrators about redirect loops.</t>
+        such as DHCP or SRV procedures <xref
+        target="I-D.ietf-dots-server-discovery"></xref>. It is RECOMMENDED
+        that DOTS clients support means to alert administrators about redirect
+        loops.</t>
       </section>
 
       <section anchor="hb" title="Heartbeat Mechanism">
@@ -2656,8 +2689,8 @@
       <section title="Tree Structure">
         <t>This document defines the YANG module "ietf-dots-signal-channel"
         (<xref target="yrequest"></xref>), which has the following tree
-        structure. A DOTS signal message can either be a mitigation or a
-        configuration message.</t>
+        structure. A DOTS signal message can be a mitigation, a configuration,
+        or a redirect message.</t>
 
         <t><figure>
             <artwork><![CDATA[module: ietf-dots-signal-channel
@@ -3555,9 +3588,9 @@ module ietf-dots-signal-channel {
         server, and connects to its configured DOTS server, the server may
         present it with a PKIX certificate. In order to ensure proper
         authentication, a DOTS client MUST verify the entire certification
-        path per <xref target="RFC5280"></xref>. The DOTS client additionally
-        uses <xref target="RFC6125"></xref> validation techniques to compare
-        the domain name with the certificate provided.</t>
+        path per <xref target="RFC5280"></xref>. Additionally, the DOTS client
+        MUST use <xref target="RFC6125"></xref> validation techniques to
+        compare the domain name with the certificate provided.</t>
 
         <t>A key challenge to deploying DOTS is the provisioning of DOTS
         clients, including the distribution of keying material to DOTS clients
@@ -3729,10 +3762,7 @@ Note that:
         IPv4, it is harder to safely make sure that there is no IP
         fragmentation. If the IPv4 path MTU is unknown, implementations may
         want to limit themselves to more conservative IPv4 datagram sizes such
-        as 576 bytes, as per <xref target="RFC0791"></xref>. IP packets whose
-        size does not exceed 576 bytes should never need to be fragmented:
-        therefore, sending a maximum of 500 bytes of DOTS signal over a UDP
-        datagram will generally avoid IP fragmentation.</t>
+        as 576 bytes, as per <xref target="RFC0791"></xref>.</t>
       </section>
     </section>
 
@@ -4502,6 +4532,9 @@ Note that:
       redirect signaling.</t>
 
       <t>Special thanks to Benjamin Kaduk for the detailed AD review.</t>
+
+      <t>Thanks to Alexey Melnikov, Adam Roach, Suresh Krishnan, Mirja
+      K&uuml;hlewind, and Alissa Cooper for the review. </t>
     </section>
   </middle>
 
@@ -4560,6 +4593,10 @@ Note that:
       <?rfc include="reference.RFC.7924"?>
 
       <?rfc include='reference.RFC.4648'?>
+
+      <?rfc include='reference.RFC.3986'?>
+
+      <?rfc include='reference.I-D.ietf-core-hop-limit'?>
     </references>
 
     <references title="Informative References">
@@ -4626,8 +4663,6 @@ Note that:
 
       <?rfc include='reference.RFC.5389'?>
 
-      <?rfc include='reference.RFC.3986'?>
-
       <?rfc include='reference.RFC.4987'?>
 
       <?rfc include="reference.RFC.7413"?>
@@ -4668,16 +4703,13 @@ Note that:
 
       <?rfc include="reference.I-D.ietf-dots-use-cases"?>
 
-      <?rfc include="reference.I-D.ietf-dots-architecture"
-?>
+      <?rfc include="reference.I-D.ietf-dots-architecture"?>
 
       <?rfc include="reference.I-D.ietf-dots-data-channel" ?>
 
       <?rfc include="reference.I-D.ietf-tls-dtls13"?>
 
-      <?rfc include='reference.I-D.ietf-core-hop-limit'?>
-
-      <?rfc include='reference.I-D.boucadair-dots-server-discovery'?>
+      <?rfc include='reference.I-D.ietf-dots-server-discovery'?>
 
       <?rfc include='reference.RFC.6887'?>
 
@@ -4701,18 +4733,18 @@ Note that:
       <t>The document recommends the use of SPKI to generate the 'cuid'. This
       design choice is motivated by the following reasons:<list
           style="symbols">
-          <t>SPKI is globally unique. </t>
+          <t>SPKI is globally unique.</t>
 
-          <t>It is deterministic. </t>
+          <t>It is deterministic.</t>
 
           <t>It allows to avoid extra cycles that may be induced by 'cuid'
           collision.</t>
 
           <t>DOTS clients do not need to store the 'cuid' in a persistent
-          storage. </t>
+          storage.</t>
 
           <t>It allows to detect compromised DOTS clients that do not adhere
-          to the 'cuid' generation algorithm. </t>
+          to the 'cuid' generation algorithm.</t>
         </list></t>
 
       <t></t>
