@@ -737,8 +737,7 @@
 
           <t><figure anchor="Figure1c"
               title="PUT to Convey DOTS Mitigation Requests (Message Body Schema)">
-              <artwork align="left"><![CDATA[  Content-Format: "application/dots+cbor"
-  {
+              <artwork align="left"><![CDATA[  {
     "ietf-dots-signal-channel:mitigation-scope": {
       "scope": [
         {
@@ -2015,8 +2014,7 @@
 
           <t><figure anchor="Figure19"
               title="GET Configuration Response Body Schema">
-              <artwork align="left"><![CDATA[Content-Format: "application/dots+cbor"
-{    
+              <artwork align="left"><![CDATA[{    
   "ietf-dots-signal-channel:signal-config": {
     "mitigating-config": {
       "heartbeat-interval": {
@@ -2123,8 +2121,7 @@
 
           <t><figure anchor="Figure17"
               title="Example of a Configuration Response Body">
-              <artwork align="left"><![CDATA[Content-Format: "application/dots+cbor"
-{
+              <artwork align="left"><![CDATA[{
   "ietf-dots-signal-channel:signal-config": {
     "mitigating-config": {
       "heartbeat-interval": {
@@ -2286,8 +2283,7 @@
 
           <t><figure anchor="Figure13a"
               title="PUT to Convey the DOTS Signal Channel Session Configuration Data (Message Body Schema)">
-              <artwork align="left"><![CDATA[  Content-Format: "application/dots+cbor"
-  {
+              <artwork align="left"><![CDATA[  {
     "ietf-dots-signal-channel:signal-config": {
       "mitigating-config": {
         "heartbeat-interval": {
