@@ -732,7 +732,7 @@
           (<xref target="Figure1c"></xref>). The schema in <xref
           target="Figure1c"></xref> uses the types defined in <xref
           target="mapping"></xref>. Note that this figure (and other similar
-          figures depicting a schema) are non-normative sketches of the rough
+          figures depicting a schema) are non-normative sketches of the
           structure of the message. </t>
 
           <t><figure anchor="Figure1c"
@@ -1926,11 +1926,11 @@
         channel can be used, for example, to configure the following:<list
             style="letters">
             <t>Heartbeat interval (heartbeat-interval): DOTS agents regularly
-            send heartbeats (CoAP Ping/Pong) to each other after mutual
-            authentication is successfully completed in order to keep the DOTS
-            signal channel open. Heartbeat messages are exchanged between DOTS
-            agents every 'heartbeat-interval' seconds to detect the current
-            status of the DOTS signal channel session.</t>
+            send heartbeats to each other after mutual authentication is
+            successfully completed in order to keep the DOTS signal channel
+            open. Heartbeat messages are exchanged between DOTS agents every
+            'heartbeat-interval' seconds to detect the current status of the
+            DOTS signal channel session.</t>
 
             <t>Missing heartbeats allowed (missing-hb-allowed): This variable
             indicates the maximum number of consecutive heartbeat messages for
@@ -2208,10 +2208,10 @@
               of 2 minutes or longer, but experience shows that sending
               packets every 15 to 30 seconds is necessary to prevent the
               majority of middleboxes from losing state for UDP flows. From
-              that standpoint, this specification recommends a minimum
-              heartbeat-interval of 15 seconds and a maximum
-              heartbeat-interval of 240 seconds. The recommended value of 30
-              seconds is selected to anticipate the expiry of NAT state.</t>
+              that standpoint, the RECOMMENDED minimum heartbeat-interval is
+              15 seconds and the RECOMMENDED maximum heartbeat-interval is 240
+              seconds. The recommended value of 30 seconds is selected to
+              anticipate the expiry of NAT state.</t>
 
               <t>A heartbeat-interval of 30 seconds may be considered as too
               chatty in some deployments. For such deployments, DOTS agents
@@ -2229,6 +2229,11 @@
               issues, or disabled entirely. Means to discover the lifetime
               assigned by a translator are out of scope.</t>
             </list></t>
+
+          <t>Section 4.2 of <xref target="RFC7252"></xref> defines a
+          &ldquo;CoAP Ping&rdquo; mechanism. Concretely, the DOTS agent sends
+          an Empty Confirmable message and the peer DOTS agent will respond by
+          sending a Reset message.</t>
 
           <t>When a Confirmable "CoAP Ping" is sent, and if there is no
           response, the "CoAP Ping" is retransmitted max-retransmit number of
@@ -2657,9 +2662,7 @@
 
         <t>In DOTS over UDP, heartbeat messages MUST be exchanged between the
         DOTS agents using the &ldquo;CoAP Ping&rdquo; mechanism defined in
-        Section 4.2 of <xref target="RFC7252"></xref>. Concretely, the DOTS
-        agent sends an Empty Confirmable message and the peer DOTS agent will
-        respond by sending a Reset message.</t>
+        Section 4.2 of <xref target="RFC7252"></xref>.</t>
 
         <t>In DOTS over TCP, heartbeat messages MUST be exchanged between the
         DOTS agents using the Ping and Pong messages specified in Section 5.4
@@ -3590,7 +3593,13 @@ module ietf-dots-signal-channel {
         authentication, a DOTS client MUST verify the entire certification
         path per <xref target="RFC5280"></xref>. Additionally, the DOTS client
         MUST use <xref target="RFC6125"></xref> validation techniques to
-        compare the domain name with the certificate provided.</t>
+        compare the domain name with the certificate provided. Certification
+        authorities that issue DOTS server certificates SHOULD support the
+        DNS-ID and SRV-ID identifier types. DOTS server SHOULD prefer the use
+        of DNS-ID and SRV-ID over CN-ID identifier types in certificate
+        requests (as described in Section 2.3 of <xref
+        target="RFC6125"></xref>) and the wildcard character '*' SHOULD NOT be
+        included in the presented identifier. </t>
 
         <t>A key challenge to deploying DOTS is the provisioning of DOTS
         clients, including the distribution of keying material to DOTS clients
@@ -4518,9 +4527,9 @@ Note that:
     </section>
 
     <section anchor="ack" title="Acknowledgements">
-      <t>Thanks to Christian Jacquenet, Roland Dobbins, Roman D. Danyliw,
-      Michael Richardson, Ehud Doron, Kaname Nishizuka, Dave Dolson, Liang
-      Xia, Gilbert Clark, Xialiang Frank, Jim Schaad, Klaus Hartke, Nesredien
+      <t>Thanks to Christian Jacquenet, Roland Dobbins, Roman Danyliw, Michael
+      Richardson, Ehud Doron, Kaname Nishizuka, Dave Dolson, Liang Xia,
+      Gilbert Clark, Xialiang Frank, Jim Schaad, Klaus Hartke, Nesredien
       Suleiman, Stephen Farrell, and Yoshifumi Nishida for the discussion and
       comments.</t>
 
