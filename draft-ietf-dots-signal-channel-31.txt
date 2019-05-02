@@ -4228,7 +4228,8 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    DOTS server SHOULD prefer the use of DNS-ID and SRV-ID over CN-ID
    identifier types in certificate requests (as described in Section 2.3
    of [RFC6125]) and the wildcard character '*' SHOULD NOT be included
-   in the presented identifier.
+   in the presented identifier.  DOTS doesn't use URI-IDs for server
+   identity verification.
 
    A key challenge to deploying DOTS is the provisioning of DOTS
    clients, including the distribution of keying material to DOTS
@@ -4248,8 +4249,7 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    environments where multiple virtual servers are reachable over a
    single IP address.  The DOTS client may or may not know if it is
    interacting with a DOTS server in a virtual server hosting
-   environment, so the DOTS client SHOULD include the DOTS server FQDN
-   in the SNI extension.
+
 
 
 
@@ -4257,6 +4257,9 @@ Reddy, et al.           Expires November 3, 2019               [Page 76]
 
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
+
+   environment, so the DOTS client SHOULD include the DOTS server FQDN
+   in the SNI extension.
 
    Implementations compliant with this profile MUST implement all of the
    following items:
@@ -4304,9 +4307,6 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
       server immediately responds with a DOTS mitigation response.  This
       assumes no packet loss is experienced.
 
-   o  0-RTT mode in which the DOTS client can authenticate itself and
-      send DOTS mitigation request messages in the first message, thus
-
 
 
 Reddy, et al.           Expires November 3, 2019               [Page 77]
@@ -4314,6 +4314,8 @@ Reddy, et al.           Expires November 3, 2019               [Page 77]
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
 
+   o  0-RTT mode in which the DOTS client can authenticate itself and
+      send DOTS mitigation request messages in the first message, thus
       reducing handshake latency. 0-RTT only works if the DOTS client
       has previously communicated with that DOTS server, which is very
       likely with the DOTS signal channel.
@@ -4359,9 +4361,7 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
       'sid' values will be rejected by the DOTS server if it maintains a
       higher numeric 'sid' value for this DOTS client.
 
-      Owing to the aforementioned protections, all DOTS signal channel
-      requests are safe to transmit in TLS 1.3 as early data.  Refer to
-      [I-D.boucadair-dots-earlydata] for more details.
+
 
 
 
@@ -4369,6 +4369,10 @@ Reddy, et al.           Expires November 3, 2019               [Page 78]
 
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
+
+      Owing to the aforementioned protections, all DOTS signal channel
+      requests are safe to transmit in TLS 1.3 as early data.  Refer to
+      [I-D.boucadair-dots-earlydata] for more details.
 
       A simplified TLS 1.3 handshake with 0-RTT DOTS mitigation request
       message exchange is shown in Figure 27.
@@ -4414,10 +4418,6 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    well with IPv6 and with most of today's IPv4 paths.  However, with
    IPv4, it is harder to safely make sure that there is no IP
    fragmentation.  If the IPv4 path MTU is unknown, implementations may
-   want to limit themselves to more conservative IPv4 datagram sizes
-   such as 576 bytes, as per [RFC0791].
-
-
 
 
 
@@ -4425,6 +4425,9 @@ Reddy, et al.           Expires November 3, 2019               [Page 79]
 
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
+
+   want to limit themselves to more conservative IPv4 datagram sizes
+   such as 576 bytes, as per [RFC0791].
 
 8.  Mutual Authentication of DOTS Agents & Authorization of DOTS Clients
 
@@ -4472,9 +4475,6 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
    Figure 28: Example of Authentication and Authorization of DOTS Agents
 
-   In the example depicted in Figure 28, the DOTS gateway and DOTS
-   clients within the 'example.com' domain mutually authenticate.  After
-
 
 
 Reddy, et al.           Expires November 3, 2019               [Page 80]
@@ -4482,6 +4482,8 @@ Reddy, et al.           Expires November 3, 2019               [Page 80]
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
 
+   In the example depicted in Figure 28, the DOTS gateway and DOTS
+   clients within the 'example.com' domain mutually authenticate.  After
    the DOTS gateway validates the identity of a DOTS client, it
    communicates with the AAA server in the 'example.com' domain to
    determine if the DOTS client is authorized to request DDoS
@@ -4527,8 +4529,6 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    +----------+----------------+---------------------+-----------------+
 
                         Table 5: 'dots' well-known URI
-
-
 
 
 
