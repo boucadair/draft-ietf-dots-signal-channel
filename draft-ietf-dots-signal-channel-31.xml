@@ -686,7 +686,7 @@ T0+15s |--TCP SYN, IPv4--------------------------------------->|
           <t>If a DOTS client is entitled to solicit the DOTS service, the
           DOTS server enables mitigation on behalf of the DOTS client by
           communicating the DOTS client's request to a mitigator (which may be
-          collocated with the DOTS server) and relaying the feedback of the
+          co-located with the DOTS server) and relaying the feedback of the
           thus-selected mitigator to the requesting DOTS client.</t>
 
           <t><figure anchor="Figure1"
