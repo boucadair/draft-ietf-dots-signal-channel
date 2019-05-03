@@ -354,16 +354,18 @@
       resources accessible using CoAP over UDP secured with DTLS and CoAP over
       TCP secured with TLS, respectively.</t>
 
-      <t>The signal channel is initiated by the DOTS client (<xref
-      target="m_req"></xref>). Once the signal channel is established, the
-      DOTS agents periodically send heartbeats to keep the channel active
-      (<xref target="hb"></xref>). At any time, the DOTS client may send a
-      mitigation request message to a DOTS server over the active channel.
-      While mitigation is active (because of the higher likelihood of packet
-      loss during a DDoS attack), the DOTS server periodically sends status
-      messages to the client, including basic mitigation feedback details.
-      Mitigation remains active until the DOTS client explicitly terminates
-      mitigation, or the mitigation lifetime expires.</t>
+      <t>The signal channel is initiated by the DOTS client. The DOTS client
+      can then negotiate, configure, and retrieve the DOTS signal channel
+      session behavior with its DOTS peer (<xref target="sigconfig"></xref>).
+      Once the signal channel is established, the DOTS agents periodically
+      send heartbeats to keep the channel active (<xref target="hb"></xref>).
+      At any time, the DOTS client may send a mitigation request message
+      (<xref target="m_req"></xref>) to a DOTS server over the active signal
+      channel. While mitigation is active (because of the higher likelihood of
+      packet loss during a DDoS attack), the DOTS server periodically sends
+      status messages to the client, including basic mitigation feedback
+      details. Mitigation remains active until the DOTS client explicitly
+      terminates mitigation, or the mitigation lifetime expires.</t>
 
       <t>DOTS signaling can happen with DTLS over UDP and TLS over TCP.
       Likewise, DOTS requests may be sent using IPv4 or IPv6 transfer

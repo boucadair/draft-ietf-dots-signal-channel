@@ -357,16 +357,18 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    over UDP secured with DTLS and CoAP over TCP secured with TLS,
    respectively.
 
-   The signal channel is initiated by the DOTS client (Section 4.4).
-   Once the signal channel is established, the DOTS agents periodically
-   send heartbeats to keep the channel active (Section 4.7).  At any
-   time, the DOTS client may send a mitigation request message to a DOTS
-   server over the active channel.  While mitigation is active (because
-   of the higher likelihood of packet loss during a DDoS attack), the
-   DOTS server periodically sends status messages to the client,
-   including basic mitigation feedback details.  Mitigation remains
-   active until the DOTS client explicitly terminates mitigation, or the
-   mitigation lifetime expires.
+   The signal channel is initiated by the DOTS client.  The DOTS client
+   can then negotiate, configure, and retrieve the DOTS signal channel
+   session behavior with its DOTS peer (Section 4.5).  Once the signal
+   channel is established, the DOTS agents periodically send heartbeats
+   to keep the channel active (Section 4.7).  At any time, the DOTS
+   client may send a mitigation request message (Section 4.4) to a DOTS
+   server over the active signal channel.  While mitigation is active
+   (because of the higher likelihood of packet loss during a DDoS
+   attack), the DOTS server periodically sends status messages to the
+   client, including basic mitigation feedback details.  Mitigation
+   remains active until the DOTS client explicitly terminates
+   mitigation, or the mitigation lifetime expires.
 
    DOTS signaling can happen with DTLS over UDP and TLS over TCP.
    Likewise, DOTS requests may be sent using IPv4 or IPv6 transfer
@@ -384,8 +386,6 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    payloads are used to carry signal channel-specific payload messages
    which convey request parameters and response information such as
    errors.  In order to allow reusing data models across protocols,
-   [RFC7951] specifies the JavaScript Object Notation (JSON) encoding of
-
 
 
 
@@ -394,6 +394,7 @@ Reddy, et al.           Expires November 3, 2019                [Page 7]
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
 
+   [RFC7951] specifies the JavaScript Object Notation (JSON) encoding of
    YANG-modeled data.  A similar effort for CBOR is defined in
    [I-D.ietf-core-yang-cbor].
 
@@ -441,7 +442,6 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    enabled between the client's network and the DOTS server, DOTS signal
    channel messages forwarded to a DOTS server MUST NOT include internal
    IP addresses/prefixes and/or port numbers; external addresses/
-   prefixes and/or port numbers as assigned by the translator MUST be
 
 
 
@@ -450,6 +450,7 @@ Reddy, et al.           Expires November 3, 2019                [Page 8]
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
 
+   prefixes and/or port numbers as assigned by the translator MUST be
    used instead.  This document does not make any recommendation about
    possible translator discovery mechanisms.  The following are some
    (non-exhaustive) deployment examples that may be considered:
@@ -489,6 +490,22 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    path-prefix to form the URI used with a CoAP request to perform the
    desired DOTS operation.
 
+
+
+
+
+
+
+
+
+
+
+
+Reddy, et al.           Expires November 3, 2019                [Page 9]
+
+Internet-Draft        DOTS Signal Channel Protocol              May 2019
+
+
          +-----------------------+----------------+-------------+
          | Operation             | Operation Path | Details     |
          +-----------------------+----------------+-------------+
@@ -498,13 +515,6 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
          +-----------------------+----------------+-------------+
 
              Table 1: Operations and their Corresponding URIs
-
-
-
-Reddy, et al.           Expires November 3, 2019                [Page 9]
-
-Internet-Draft        DOTS Signal Channel Protocol              May 2019
-
 
 4.3.  Happy Eyeballs for DOTS Signal Channel
 
@@ -545,6 +555,13 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    Happy Eyeballs mechanism is completed, caching avoids trashing the
    network especially in the presence of DDoS attack traffic.
 
+
+
+Reddy, et al.           Expires November 3, 2019               [Page 10]
+
+Internet-Draft        DOTS Signal Channel Protocol              May 2019
+
+
    The order of preference of the DOTS signal channel address family and
    transport protocol (most preferred first) is: UDP over IPv6, UDP over
    IPv4, TCP over IPv6, and finally TCP over IPv4.  This order adheres
@@ -554,14 +571,6 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
    In reference to Figure 4, the DOTS client sends two TCP SYNs and two
    DTLS ClientHello messages at the same time over IPv6 and IPv4.  In
-
-
-
-Reddy, et al.           Expires November 3, 2019               [Page 10]
-
-Internet-Draft        DOTS Signal Channel Protocol              May 2019
-
-
    this example, it is assumed that the IPv6 path is broken and UDP
    traffic is dropped by a middlebox but has little impact to the DOTS
    client because there is no long delay before using IPv4 and TCP.  The
@@ -600,15 +609,6 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    The following methods are used by a DOTS client to request, withdraw,
    or retrieve the status of mitigation requests:
 
-   PUT:    DOTS clients use the PUT method to request mitigation from a
-           DOTS server (Section 4.4.1).  During active mitigation, DOTS
-           clients may use PUT requests to carry mitigation efficacy
-           updates to the DOTS server (Section 4.4.3).
-
-   GET:    DOTS clients may use the GET method to subscribe to DOTS
-           server status messages, or to retrieve the list of its
-           mitigations maintained by a DOTS server (Section 4.4.2).
-
 
 
 
@@ -617,6 +617,15 @@ Reddy, et al.           Expires November 3, 2019               [Page 11]
 
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
+
+   PUT:    DOTS clients use the PUT method to request mitigation from a
+           DOTS server (Section 4.4.1).  During active mitigation, DOTS
+           clients may use PUT requests to carry mitigation efficacy
+           updates to the DOTS server (Section 4.4.3).
+
+   GET:    DOTS clients may use the GET method to subscribe to DOTS
+           server status messages, or to retrieve the list of its
+           mitigations maintained by a DOTS server (Section 4.4.2).
 
    DELETE: DOTS clients use the DELETE method to withdraw a request for
            mitigation from a DOTS server (Section 4.4.4).
@@ -652,6 +661,19 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    colocated with the DOTS server) and relaying the feedback of the
    thus-selected mitigator to the requesting DOTS client.
 
+
+
+
+
+
+
+
+
+Reddy, et al.           Expires November 3, 2019               [Page 12]
+
+Internet-Draft        DOTS Signal Channel Protocol              May 2019
+
+
      Header: PUT (Code=0.03)
      Uri-Path: ".well-known"
      Uri-Path: "dots"
@@ -665,14 +687,6 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
      }
 
              Figure 5: PUT to Convey DOTS Mitigation Requests
-
-
-
-
-Reddy, et al.           Expires November 3, 2019               [Page 12]
-
-Internet-Draft        DOTS Signal Channel Protocol              May 2019
-
 
    The order of the Uri-Path options is important as it defines the CoAP
    resource.  In particular, 'mid' MUST follow 'cuid'.
@@ -708,6 +722,14 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
       NOT do so when mitigations are still active for the old 'cuid'.
       The 'cuid' SHOULD be 22 characters to avoid DOTS signal message
       fragmentation over UDP.  Furthermore, if that DOTS client created
+
+
+
+Reddy, et al.           Expires November 3, 2019               [Page 13]
+
+Internet-Draft        DOTS Signal Channel Protocol              May 2019
+
+
       aliases and filtering entries at the DOTS server by means of the
       DOTS data channel, it MUST delete all the entries bound to the old
       'cuid' and re-install them using the new 'cuid'.
@@ -720,15 +742,6 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
       Client-domain DOTS gateways MUST handle 'cuid' collision directly
       and it is RECOMMENDED that 'cuid' collision is handled directly by
       server-domain DOTS gateways.
-
-
-
-
-
-Reddy, et al.           Expires November 3, 2019               [Page 13]
-
-Internet-Draft        DOTS Signal Channel Protocol              May 2019
-
 
       DOTS gateways MAY rewrite the 'cuid' used by peer DOTS clients.
       Triggers for such rewriting are out of scope.
@@ -761,19 +774,6 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    Section 6.  Note that this figure (and other similar figures
    depicting a schema) are non-normative sketches of the structure of
    the message.
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
