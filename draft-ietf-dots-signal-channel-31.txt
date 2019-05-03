@@ -338,9 +338,9 @@ Reddy, et al.           Expires November 3, 2019                [Page 6]
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
 
-   By default, a DOTS signal channel MUST run over port number TBD as
-   defined in Section 9.1, for both UDP and TCP, unless the DOTS server
-   has a mutual agreement with its DOTS clients to use a different port
+   A DOTS signal channel SHOULD run over port number TBD as defined in
+   Section 9.1, for both UDP and TCP, unless the DOTS server has a
+   mutual agreement with its DOTS clients to use a different port
    number.  DOTS clients MAY additionally support means to dynamically
    discover the ports used by their DOTS servers (e.g.,
    [I-D.ietf-dots-server-discovery]).  In order to use a distinct port
@@ -962,13 +962,14 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
       This is an optional attribute.
 
    In deployments where server-domain DOTS gateways are enabled,
-   identity information about the origin source client domain SHOULD be
-   propagated to the DOTS server.  That information is meant to assist
-   the DOTS server to enforce some policies such as grouping DOTS
-   clients that belong to the same DOTS domain, limiting the number of
-   DOTS requests, and identifying the mitigation scope.  These policies
-   can be enforced per-client, per-client domain, or both.  Also, the
-   identity information may be used for auditing and debugging purposes.
+   identity information about the origin source client domain ('cdid')
+   SHOULD be propagated to the DOTS server.  That information is meant
+   to assist the DOTS server to enforce some policies such as grouping
+   DOTS clients that belong to the same DOTS domain, limiting the number
+   of DOTS requests, and identifying the mitigation scope.  These
+   policies can be enforced per-client, per-client domain, or both.
+   Also, the identity information may be used for auditing and debugging
+   purposes.
 
    Figure 7 shows an example of a request relayed by a server-domain
    DOTS gateway.
@@ -1000,8 +1001,7 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
       policy enforcement purposes (e.g., enforce a quota on filtering
       rules).  These policies are deployment-specific.
 
-      Server-domain DOTS gateways SHOULD support a configuration option
-      to instruct whether 'cdid' parameter is to be inserted.
+
 
 
 
@@ -1009,6 +1009,9 @@ Reddy, et al.           Expires November 3, 2019               [Page 18]
 
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
+
+      Server-domain DOTS gateways SHOULD support a configuration option
+      to instruct whether 'cdid' parameter is to be inserted.
 
       In order to accommodate deployments that require enforcing per-
       client policies, per-client domain policies, or a combination
@@ -1054,9 +1057,6 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    Because of the complexity to handle partial failure cases, this
    specification does not allow for including multiple mitigation
    requests in the same PUT request.  Concretely, a DOTS client MUST NOT
-   include multiple entries in the 'scope' array of the same PUT
-   request.
-
 
 
 
@@ -1065,6 +1065,9 @@ Reddy, et al.           Expires November 3, 2019               [Page 19]
 
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
+
+   include multiple entries in the 'scope' array of the same PUT
+   request.
 
    FQDN and URI mitigation scopes may be thought of as a form of scope
    alias, in which the addresses associated with the domain name or URI
@@ -1083,9 +1086,6 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    presence of 'cdid' indicates that a server-domain DOTS gateway has
    modified the initial PUT request sent by the DOTS client.  Note that
    'cdid' MUST NOT appear in the PUT request message body.
-
-
-
 
 
 
@@ -1336,7 +1336,7 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
    If the DOTS server receives a mitigation request which overlaps with
    an active mitigation request, but both having distinct 'trigger-
-   mitigation' types, the DOTS server MUST deactivate (absent explicit
+   mitigation' types, the DOTS server SHOULD deactivate (absent explicit
    policy/configuration otherwise) the mitigation request with 'trigger-
 
 

@@ -335,11 +335,11 @@
 ]]></artwork>
         </figure></t>
 
-      <t>By default, a DOTS signal channel MUST run over port number TBD as
-      defined in <xref target="port"></xref>, for both UDP and TCP, unless the
-      DOTS server has a mutual agreement with its DOTS clients to use a
-      different port number. DOTS clients MAY additionally support means to
-      dynamically discover the ports used by their DOTS servers (e.g., <xref
+      <t>A DOTS signal channel SHOULD run over port number TBD as defined in
+      <xref target="port"></xref>, for both UDP and TCP, unless the DOTS
+      server has a mutual agreement with its DOTS clients to use a different
+      port number. DOTS clients MAY additionally support means to dynamically
+      discover the ports used by their DOTS servers (e.g., <xref
       target="I-D.ietf-dots-server-discovery"></xref>). In order to use a
       distinct port number (as opposed to TBD), DOTS clients and servers
       SHOULD support a configurable parameter to supply the port number to
@@ -877,14 +877,14 @@
             </list></t>
 
           <t>In deployments where server-domain DOTS gateways are enabled,
-          identity information about the origin source client domain SHOULD be
-          propagated to the DOTS server. That information is meant to assist
-          the DOTS server to enforce some policies such as grouping DOTS
-          clients that belong to the same DOTS domain, limiting the number of
-          DOTS requests, and identifying the mitigation scope. These policies
-          can be enforced per-client, per-client domain, or both. Also, the
-          identity information may be used for auditing and debugging
-          purposes.</t>
+          identity information about the origin source client domain ('cdid')
+          SHOULD be propagated to the DOTS server. That information is meant
+          to assist the DOTS server to enforce some policies such as grouping
+          DOTS clients that belong to the same DOTS domain, limiting the
+          number of DOTS requests, and identifying the mitigation scope. These
+          policies can be enforced per-client, per-client domain, or both.
+          Also, the identity information may be used for auditing and
+          debugging purposes.</t>
 
           <t><xref target="Figure1a"></xref> shows an example of a request
           relayed by a server-domain DOTS gateway.</t>
@@ -1182,13 +1182,13 @@
 
           <t>If the DOTS server receives a mitigation request which overlaps
           with an active mitigation request, but both having distinct
-          'trigger-mitigation' types, the DOTS server MUST deactivate (absent
-          explicit policy/configuration otherwise) the mitigation request with
-          'trigger-mitigation' set to false. Particularly, if the mitigation
-          request with 'trigger-mitigation' set to false is active, the DOTS
-          server withdraws the mitigation request (i.e., status code is set to
-          '7' as defined in <xref target="status"></xref>) and transitions the
-          status of the mitigation request to '8'.</t>
+          'trigger-mitigation' types, the DOTS server SHOULD deactivate
+          (absent explicit policy/configuration otherwise) the mitigation
+          request with 'trigger-mitigation' set to false. Particularly, if the
+          mitigation request with 'trigger-mitigation' set to false is active,
+          the DOTS server withdraws the mitigation request (i.e., status code
+          is set to '7' as defined in <xref target="status"></xref>) and
+          transitions the status of the mitigation request to '8'.</t>
 
           <t>Upon DOTS signal channel session loss with a peer DOTS client,
           the DOTS server MUST withdraw (absent explicit policy/configuration
