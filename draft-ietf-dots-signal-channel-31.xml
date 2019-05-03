@@ -524,59 +524,101 @@
 
         <t>To overcome these connection setup problems, the DOTS client
         attempts to connect to its DOTS server(s) using both IPv6 and IPv4,
-        and tries both DTLS over UDP and TLS over TCP in a manner similar to
-        the Happy Eyeballs mechanism <xref target="RFC8305"></xref>. These
-        connection attempts are performed by the DOTS client when it
+        and tries both DTLS over UDP and TLS over TCP following a DOTS Happy
+        Eyeballs approach. To some extent, this approach is similar to the
+        Happy Eyeballs mechanism defined in <xref target="RFC8305"></xref>.
+        The connection attempts are performed by the DOTS client when it
         initializes, or in general when it has to select an address family and
         transport to contact its DOTS server. The results of the Happy
         Eyeballs procedure are used by the DOTS client for sending its
-        subsequent messages to the DOTS server. Note that the DOTS client
-        after successfully establishing a connection MUST cache information
-        regarding the outcome of each connection attempt. The cached
-        information is flushed when its age exceeds a specific time period on
-        the order of few minutes (e.g., 10 mn). Typically, if the DOTS client
-        has to re-establish the connection with the same DOTS server within
-        few seconds after the Happy Eyeballs mechanism is completed, caching
-        avoids trashing the network especially in the presence of DDoS attack
-        traffic.</t>
+        subsequent messages to the DOTS server. The difference in behavior
+        with respect to the Happy Eyeballs mechanism <xref
+        target="RFC8305"></xref> are listed below: </t>
 
-        <t>The order of preference of the DOTS signal channel address family
-        and transport protocol (most preferred first) is: UDP over IPv6, UDP
-        over IPv4, TCP over IPv6, and finally TCP over IPv4. This order
-        adheres to the address preference order specified in <xref
-        target="RFC6724"></xref> and the DOTS signal channel preference which
-        privileges the use of UDP over TCP (to avoid TCP's head of line
-        blocking).</t>
+        <t><list style="symbols">
+            <t>The order of preference of the DOTS signal channel address
+            family and transport protocol (most preferred first) is: UDP over
+            IPv6, UDP over IPv4, TCP over IPv6, and finally TCP over IPv4.
+            This order adheres to the address preference order specified in
+            <xref target="RFC6724"></xref> and the DOTS signal channel
+            preference which privileges the use of UDP over TCP (to avoid
+            TCP's head of line blocking).</t>
+
+            <t>The DOTS client after successfully establishing a connection
+            MUST cache information regarding the outcome of each connection
+            attempt for a specific time period, and it uses that information
+            to avoid thrashing the network with subsequent attempts. The
+            cached information is flushed when its age exceeds a specific time
+            period on the order of few minutes (e.g., 10 mn). Typically, if
+            the DOTS client has to re-establish the connection with the same
+            DOTS server within few seconds after the Happy Eyeballs mechanism
+            is completed, caching avoids trashing the network especially in
+            the presence of DDoS attack traffic. </t>
+
+            <t>If DOTS signal channel session is established with TLS (but
+            DTLS failed), the DOTS client periodically repeats the mechanism
+            to discover whether DOTS signal channel messages with DTLS over
+            UDP becomes available from the DOTS server, so the DOTS client can
+            migrate the DOTS signal channel from TCP to UDP. Such probing
+            SHOULD NOT be done more frequently than every 24 hours and MUST
+            NOT be done more frequently than every 5 minutes.</t>
+
+            <t>If the DOTS signal channel session is established during an
+            attack time, the DOTS client SHOULD send the TCP SYNs and DTLS
+            ClientHello messages at the same time over IPv6 and IPv4 so that
+            the mitigation request can be sent as soon as the connection is
+            established on one of the transports and one of the address
+            families. </t>
+          </list></t>
+
+        <t>When connection attempts are made when no mitigation request is
+        active, the DOTS client SHOULD use a "Connection Attempt Delay" <xref
+        target="RFC8305"></xref> set to 5 seconds. </t>
 
         <t>In reference to <xref target="fig_happy_eyeballs"></xref>, the DOTS
-        client sends two TCP SYNs and two DTLS ClientHello messages at the
-        same time over IPv6 and IPv4. In this example, it is assumed that the
+        client proceeds with the connection attempts following the rules in
+        <xref target="RFC8305"></xref> because these attempts are made when no
+        mitigation request is active. In this example, it is assumed that the
         IPv6 path is broken and UDP traffic is dropped by a middlebox but has
         little impact to the DOTS client because there is no long delay before
-        using IPv4 and TCP. The DOTS client periodically repeats the mechanism
-        to discover whether DOTS signal channel messages with DTLS over UDP
-        becomes available from the DOTS server, so the DOTS client can migrate
-        the DOTS signal channel from TCP to UDP. Such probing SHOULD NOT be
-        done more frequently than every 24 hours and MUST NOT be done more
-        frequently than every 5 minutes.</t>
-
-        <t>A single DOTS signal channel between DOTS agents can be used to
-        exchange multiple DOTS signal messages. To reduce DOTS client and DOTS
-        server workload, DOTS clients SHOULD re-use the (D)TLS session.</t>
+        using IPv4 and TCP. </t>
 
         <t><figure anchor="fig_happy_eyeballs"
-            title="DOTS Happy Eyeballs (Sample Flow)">
+            title="DOTS Happy Eyeballs during Idle Time (Sample Flow)">
+            <artwork align="center"><![CDATA[ +-----------+                                           +-----------+
+ |DOTS client|                                           |DOTS server|
+ +-----------+                                           +-----------+
+       |                                                       |
+    T0 |--DTLS ClientHello, IPv6 ---->X                        |
+ T0+5s |--DTLS ClientHello, IPv4 ---->X                        |
+T0+10s |--TCP SYN, IPv6-------------->X                        |
+T0+15s |--TCP SYN, IPv4--------------------------------------->|
+       |<-TCP SYNACK-------------------------------------------|
+       |--TCP ACK--------------------------------------------->|
+       |<------------Establish TLS Session-------------------->|
+       |----------------DOTS signal--------------------------->|
+       |                                                       |
+
+  Note: Retransmission messages are not shown. 
+]]></artwork>
+          </figure></t>
+
+        <t>If the DOTS client has to establish a DOTS session during an attack
+        time under the same network conditions as in <xref
+        target="fig_happy_eyeballs"></xref>, it sends two TCP SYNs and two
+        DTLS ClientHello messages at the same time over IPv4 and IPv6 (<xref
+        target="fig_happy_eyeballs2"></xref>).</t>
+
+        <t><figure anchor="fig_happy_eyeballs2"
+            title="DOTS Happy Eyeballs during Attack Time (Sample Flow)">
             <artwork align="center"><![CDATA[+-----------+                                           +-----------+
 |DOTS client|                                           |DOTS server|
 +-----------+                                           +-----------+
       |                                                       |
-      |--DTLS ClientHello, IPv6 ---->X                        |
-      |--DTLS ClientHello, IPv4 ---->X                        |
-      |--TCP SYN, IPv6-------------->X                        |
-      |--TCP SYN, IPv4--------------------------------------->|
-      |--DTLS ClientHello, IPv6 ---->X                        |
-      |--DTLS ClientHello, IPv4 ---->X                        |
-      |--TCP SYN, IPv6-------------->X                        |
+   T0 |--DTLS ClientHello, IPv6 ---->X                        |
+   T0 |--DTLS ClientHello, IPv4 ---->X                        |
+   T0 |--TCP SYN, IPv6-------------->X                        |
+   T0 |--TCP SYN, IPv4--------------------------------------->|
       |<-TCP SYNACK-------------------------------------------|
       |--TCP ACK--------------------------------------------->|
       |<------------Establish TLS Session-------------------->|
@@ -585,7 +627,9 @@
 ]]></artwork>
           </figure></t>
 
-        <t></t>
+        <t>A single DOTS signal channel between DOTS agents can be used to
+        exchange multiple DOTS signal messages. To reduce DOTS client and DOTS
+        server workload, DOTS clients SHOULD re-use the (D)TLS session.</t>
       </section>
 
       <section anchor="m_req" title="DOTS Mitigation Methods">
@@ -642,7 +686,7 @@
           <t>If a DOTS client is entitled to solicit the DOTS service, the
           DOTS server enables mitigation on behalf of the DOTS client by
           communicating the DOTS client's request to a mitigator (which may be
-          colocated with the DOTS server) and relaying the feedback of the
+          collocated with the DOTS server) and relaying the feedback of the
           thus-selected mitigator to the requesting DOTS client.</t>
 
           <t><figure anchor="Figure1"
