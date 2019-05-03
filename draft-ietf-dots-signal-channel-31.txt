@@ -104,7 +104,7 @@ Table of Contents
      4.1.  DOTS Server(s) Discovery  . . . . . . . . . . . . . . . .   9
      4.2.  CoAP URIs . . . . . . . . . . . . . . . . . . . . . . . .   9
      4.3.  Happy Eyeballs for DOTS Signal Channel  . . . . . . . . .  10
-     4.4.  DOTS Mitigation Methods . . . . . . . . . . . . . . . . .  12
+     4.4.  DOTS Mitigation Methods . . . . . . . . . . . . . . . . .  13
        4.4.1.  Request Mitigation  . . . . . . . . . . . . . . . . .  13
 
 
@@ -591,16 +591,16 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
       established on one of the transports and one of the address
       families.
 
-   When connection attempts are made when no mitigation request is
-   active, the DOTS client SHOULD use a "Connection Attempt Delay"
-   [RFC8305] set to 5 seconds.
-
    In reference to Figure 4, the DOTS client proceeds with the
    connection attempts following the rules in [RFC8305] because these
-   attempts are made when no mitigation request is active.  In this
+   attempts are made when no attack traffic is present.  In this
    example, it is assumed that the IPv6 path is broken and UDP traffic
    is dropped by a middlebox but has little impact to the DOTS client
    because there is no long delay before using IPv4 and TCP.
+
+
+
+
 
 
 
@@ -623,16 +623,18 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    +-----------+                                           +-----------+
          |                                                       |
       T0 |--DTLS ClientHello, IPv6 ---->X                        |
-   T0+5s |--DTLS ClientHello, IPv4 ---->X                        |
-  T0+10s |--TCP SYN, IPv6-------------->X                        |
-  T0+15s |--TCP SYN, IPv4--------------------------------------->|
+      T1 |--DTLS ClientHello, IPv4 ---->X                        |
+      T2 |--TCP SYN, IPv6-------------->X                        |
+      T3 |--TCP SYN, IPv4--------------------------------------->|
          |<-TCP SYNACK-------------------------------------------|
          |--TCP ACK--------------------------------------------->|
          |<------------Establish TLS Session-------------------->|
          |----------------DOTS signal--------------------------->|
          |                                                       |
 
-    Note: Retransmission messages are not shown.
+    Note:
+     * Retransmission messages are not shown.
+     * T1-T0=T2-T1=T3-T2= Connection Attempt Delay [RFC8305].
 
        Figure 4: DOTS Happy Eyeballs during Idle Time (Sample Flow)
 
@@ -661,10 +663,8 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    exchange multiple DOTS signal messages.  To reduce DOTS client and
    DOTS server workload, DOTS clients SHOULD re-use the (D)TLS session.
 
-4.4.  DOTS Mitigation Methods
 
-   The following methods are used by a DOTS client to request, withdraw,
-   or retrieve the status of mitigation requests:
+
 
 
 
@@ -673,6 +673,11 @@ Reddy, et al.           Expires November 4, 2019               [Page 12]
 
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
+
+4.4.  DOTS Mitigation Methods
+
+   The following methods are used by a DOTS client to request, withdraw,
+   or retrieve the status of mitigation requests:
 
    PUT:    DOTS clients use the PUT method to request mitigation from a
            DOTS server (Section 4.4.1).  During active mitigation, DOTS
@@ -716,11 +721,6 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    communicating the DOTS client's request to a mitigator (which may be
    co-located with the DOTS server) and relaying the feedback of the
    thus-selected mitigator to the requesting DOTS client.
-
-
-
-
-
 
 
 

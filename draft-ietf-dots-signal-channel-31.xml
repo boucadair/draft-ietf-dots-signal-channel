@@ -571,14 +571,13 @@
             families. </t>
           </list></t>
 
-        <t>When connection attempts are made when no mitigation request is
-        active, the DOTS client SHOULD use a "Connection Attempt Delay" <xref
-        target="RFC8305"></xref> set to 5 seconds. </t>
-
-        <t>In reference to <xref target="fig_happy_eyeballs"></xref>, the DOTS
-        client proceeds with the connection attempts following the rules in
-        <xref target="RFC8305"></xref> because these attempts are made when no
-        mitigation request is active. In this example, it is assumed that the
+        <t><!--When connection attempts are made when no mitigation request is
+active, the DOTS client SHOULD use a "Connection Attempt Delay"
+[RFC8305] set to 5 seconds.
+-->In reference to <xref target="fig_happy_eyeballs"></xref>, the DOTS client
+        proceeds with the connection attempts following the rules in <xref
+        target="RFC8305"></xref> because these attempts are made when no
+        attack traffic is present. In this example, it is assumed that the
         IPv6 path is broken and UDP traffic is dropped by a middlebox but has
         little impact to the DOTS client because there is no long delay before
         using IPv4 and TCP. </t>
@@ -590,17 +589,18 @@
  +-----------+                                           +-----------+
        |                                                       |
     T0 |--DTLS ClientHello, IPv6 ---->X                        |
- T0+5s |--DTLS ClientHello, IPv4 ---->X                        |
-T0+10s |--TCP SYN, IPv6-------------->X                        |
-T0+15s |--TCP SYN, IPv4--------------------------------------->|
+    T1 |--DTLS ClientHello, IPv4 ---->X                        |
+    T2 |--TCP SYN, IPv6-------------->X                        |
+    T3 |--TCP SYN, IPv4--------------------------------------->|
        |<-TCP SYNACK-------------------------------------------|
        |--TCP ACK--------------------------------------------->|
        |<------------Establish TLS Session-------------------->|
        |----------------DOTS signal--------------------------->|
        |                                                       |
 
-  Note: Retransmission messages are not shown. 
-]]></artwork>
+  Note: 
+   * Retransmission messages are not shown.
+   * T1-T0=T2-T1=T3-T2= Connection Attempt Delay [RFC8305].]]></artwork>
           </figure></t>
 
         <t>If the DOTS client has to establish a DOTS session during an attack
