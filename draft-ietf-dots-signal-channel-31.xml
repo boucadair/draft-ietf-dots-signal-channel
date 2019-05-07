@@ -624,15 +624,14 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
         Non-confirmable messages (Section 2.2 of <xref
         target="RFC7252"></xref>).</t>
 
-        <t>DOTS agents SHOULD follow the data transmission guidelines
-        discussed in Section 3.1.3 of <xref target="RFC8085"></xref> and
-        control transmission behavior by not sending more than one UDP
-        datagram per round-trip time (RTT) to the peer DOTS agent on
-        average.</t>
+        <t>DOTS agents MUST follow the data transmission guidelines discussed
+        in Section 3.1.3 of <xref target="RFC8085"></xref> and control
+        transmission behavior by not sending more than one UDP datagram per
+        round-trip time (RTT) to the peer DOTS agent on average.</t>
 
         <t>Requests marked by the DOTS client as Non-confirmable messages are
         sent at regular intervals until a response is received from the DOTS
-        server. If the DOTS client cannot maintain an RTT estimate, it SHOULD
+        server. If the DOTS client cannot maintain an RTT estimate, it MUST
         NOT send more than one Non-confirmable request every 3 seconds, and
         SHOULD use an even less aggressive rate whenever possible (case 2 in
         Section 3.1.3 of <xref target="RFC8085"></xref>).</t>
@@ -1651,9 +1650,9 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
             attack, the DOTS server periodically sends attack mitigation
             status to the DOTS client and also notifies the DOTS client
             whenever the status of the attack mitigation changes. If the DOTS
-            server cannot maintain an RTT estimate, it SHOULD NOT send more
-            than one asynchronous notification every 3 seconds, and SHOULD use
-            an even less aggressive rate whenever possible (case 2 in Section
+            server cannot maintain an RTT estimate, it MUST NOT send more than
+            one asynchronous notification every 3 seconds, and SHOULD use an
+            even less aggressive rate whenever possible (case 2 in Section
             3.1.3 of <xref target="RFC8085"></xref>).</t>
 
             <t><!--The DOTS server MUST use the same CUID as the one used by the DOTS client to observe a mitigation request.-->When
@@ -1741,9 +1740,12 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
             <t>The DOTS client can send the GET request at frequent intervals
             without the Observe Option to retrieve the configuration data of
             the mitigation request and non-configuration data (i.e., the
-            attack status). The frequency of polling the DOTS server to get
-            the mitigation status SHOULD follow the transmission guidelines in
-            Section 3.1.3 of <xref target="RFC8085"></xref>.</t>
+            attack status). DOTS clients MAY be configured with a policy
+            indicating the frequency of polling DOTS servers to get the
+            mitigation status. Absent such policy, the frequency of polling
+            the DOTS server to get the mitigation status SHOULD follow the
+            transmission guidelines in Section 3.1.3 of <xref
+            target="RFC8085"></xref>. </t>
 
             <t>If the DOTS server has been able to mitigate the attack and the
             attack has stopped, the DOTS server indicates as such in the

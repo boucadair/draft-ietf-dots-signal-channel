@@ -638,17 +638,17 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    Mitigation request and response messages are marked as Non-
    confirmable messages (Section 2.2 of [RFC7252]).
 
-   DOTS agents SHOULD follow the data transmission guidelines discussed
-   in Section 3.1.3 of [RFC8085] and control transmission behavior by
-   not sending more than one UDP datagram per round-trip time (RTT) to
-   the peer DOTS agent on average.
+   DOTS agents MUST follow the data transmission guidelines discussed in
+   Section 3.1.3 of [RFC8085] and control transmission behavior by not
+   sending more than one UDP datagram per round-trip time (RTT) to the
+   peer DOTS agent on average.
 
    Requests marked by the DOTS client as Non-confirmable messages are
    sent at regular intervals until a response is received from the DOTS
-   server.  If the DOTS client cannot maintain an RTT estimate, it
-   SHOULD NOT send more than one Non-confirmable request every 3
-   seconds, and SHOULD use an even less aggressive rate whenever
-   possible (case 2 in Section 3.1.3 of [RFC8085]).
+   server.  If the DOTS client cannot maintain an RTT estimate, it MUST
+   NOT send more than one Non-confirmable request every 3 seconds, and
+   SHOULD use an even less aggressive rate whenever possible (case 2 in
+   Section 3.1.3 of [RFC8085]).
 
    JSON encoding is used to illustrate the various methods defined in
    the following sub-sections.  Also, the examples use the Labels
@@ -1873,7 +1873,7 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    DOTS server periodically sends attack mitigation status to the DOTS
    client and also notifies the DOTS client whenever the status of the
    attack mitigation changes.  If the DOTS server cannot maintain an RTT
-   estimate, it SHOULD NOT send more than one asynchronous notification
+   estimate, it MUST NOT send more than one asynchronous notification
    every 3 seconds, and SHOULD use an even less aggressive rate whenever
    possible (case 2 in Section 3.1.3 of [RFC8085]).
 
@@ -1998,8 +1998,10 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    The DOTS client can send the GET request at frequent intervals
    without the Observe Option to retrieve the configuration data of the
    mitigation request and non-configuration data (i.e., the attack
-   status).  The frequency of polling the DOTS server to get the
-   mitigation status SHOULD follow the transmission guidelines in
+   status).  DOTS clients MAY be configured with a policy indicating the
+   frequency of polling DOTS servers to get the mitigation status.
+   Absent such policy, the frequency of polling the DOTS server to get
+   the mitigation status SHOULD follow the transmission guidelines in
    Section 3.1.3 of [RFC8085].
 
    If the DOTS server has been able to mitigate the attack and the
@@ -2007,9 +2009,7 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    In such case, the DOTS client recalls the mitigation request by
    issuing a DELETE request for this mitigation request (Section 4.4.4).
 
-   A DOTS client SHOULD react to the status of the attack as per the
-   information sent by the DOTS server rather than performing its own
-   detection that the attack has been mitigated.  This ensures that the
+
 
 
 
@@ -2018,6 +2018,9 @@ Reddy, et al.           Expires November 8, 2019               [Page 36]
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
 
+   A DOTS client SHOULD react to the status of the attack as per the
+   information sent by the DOTS server rather than performing its own
+   detection that the attack has been mitigated.  This ensures that the
    DOTS client does not recall a mitigation request prematurely because
    it is possible that the DOTS client does not sense the DDoS attack on
    its resources, but the DOTS server could be actively mitigating the
@@ -2052,9 +2055,6 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
    An example of an efficacy update message, which includes an If-Match
    Option with an empty value, is depicted in Figure 16.
-
-
-
 
 
 
