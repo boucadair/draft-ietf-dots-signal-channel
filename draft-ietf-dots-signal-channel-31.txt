@@ -338,18 +338,17 @@ Reddy, et al.           Expires November 8, 2019                [Page 6]
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
 
-   A DOTS signal channel SHOULD run over port number TBD as defined in
-   Section 9.1, for both UDP and TCP, unless the DOTS server has a
-   mutual agreement with its DOTS clients to use a different port
-   number.  DOTS clients MAY additionally support means to dynamically
-   discover the ports used by their DOTS servers (e.g.,
-   [I-D.ietf-dots-server-discovery]).  In order to use a distinct port
-   number (as opposed to TBD), DOTS clients and servers SHOULD support a
-   configurable parameter to supply the port number to use.  The
-   rationale for not using the default port number 5684 ((D)TLS CoAP) is
-   to allow for differentiated behaviors in environments where both a
-   DOTS gateway and an IoT gateway (e.g., Figure 3 of [RFC7452]) are
-   present.
+   In some cases, a DOTS client and server may have mutual agreement to
+   use a specific port number, such as by explicit configuration or
+   dynamic discovery [I-D.ietf-dots-server-discovery].  Absent such
+   mutual agreement, the DOTS signal channel MUST run over port number
+   TBD as defined in Section 9.1, for both UDP and TCP.  In order to use
+   a distinct port number (as opposed to TBD), DOTS clients and servers
+   SHOULD support a configurable parameter to supply the port number to
+   use.  The rationale for not using the default port number 5684
+   ((D)TLS CoAP) is to allow for differentiated behaviors in
+   environments where both a DOTS gateway and an IoT gateway (e.g.,
+   Figure 3 of [RFC7452]) are present.
 
    The signal channel uses the "coaps" URI scheme defined in Section 6
    of [RFC7252] and the "coaps+tcp" URI scheme defined in Section 8.2 of
@@ -386,6 +385,7 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    payloads are used to carry signal channel-specific payload messages
    which convey request parameters and response information such as
    errors.  In order to allow reusing data models across protocols,
+   [RFC7951] specifies the JavaScript Object Notation (JSON) encoding of
 
 
 
@@ -394,7 +394,6 @@ Reddy, et al.           Expires November 8, 2019                [Page 7]
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
 
-   [RFC7951] specifies the JavaScript Object Notation (JSON) encoding of
    YANG-modeled data.  A similar effort for CBOR is defined in
    [I-D.ietf-core-yang-cbor].
 
@@ -441,7 +440,8 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    IP addresses/prefixes and/or port numbers; external addresses/
    prefixes and/or port numbers as assigned by the translator MUST be
    used instead.  This document does not make any recommendation about
-
+   possible translator discovery mechanisms.  The following are some
+   (non-exhaustive) deployment examples that may be considered:
 
 
 
@@ -449,9 +449,6 @@ Reddy, et al.           Expires November 8, 2019                [Page 8]
 
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
-
-   possible translator discovery mechanisms.  The following are some
-   (non-exhaustive) deployment examples that may be considered:
 
    o  Port Control Protocol (PCP) [RFC6887] or Session Traversal
       Utilities for NAT (STUN) [RFC5389] may be used to retrieve the
@@ -497,6 +494,9 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
          +-----------------------+----------------+-------------+
 
              Table 1: Operations and their Corresponding URIs
+
+
+
 
 
 
