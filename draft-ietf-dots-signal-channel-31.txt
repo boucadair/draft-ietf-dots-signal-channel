@@ -1863,7 +1863,7 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    signal channel enables asynchronous notifications between the agents.
    [RFC7641] indicates that (1) a notification can be sent in a
    Confirmable or a Non-confirmable message, and (2) the message type
-   used is typically application dependent and may be determined by the
+   used is typically application-dependent and may be determined by the
    server for each notification individually.  For DOTS server
    application, the message type MUST always be set to Non-confirmable
    even if the underlying COAP library elects a notification to be sent
@@ -2213,9 +2213,7 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
    Once the active-but-terminating period elapses, the DOTS server MUST
    treat the mitigation as terminated, as the DOTS client is no longer
-   responsible for the mitigation.  For example, if there is a financial
-   relationship between the DOTS client and server domains, the DOTS
-   client stops incurring cost at this point.
+   responsible for the mitigation.
 
    If a mitigation is triggered due to a signal channel loss, the DOTS
    server relies upon normal triggers to stop that mitigation
@@ -2234,6 +2232,8 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
        send heartbeats to each other after mutual authentication is
        successfully completed in order to keep the DOTS signal channel
        open.  Heartbeat messages are exchanged between DOTS agents every
+       'heartbeat-interval' seconds to detect the current status of the
+       DOTS signal channel session.
 
 
 
@@ -2241,9 +2241,6 @@ Reddy, et al.           Expires November 8, 2019               [Page 40]
 
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
-
-       'heartbeat-interval' seconds to detect the current status of the
-       DOTS signal channel session.
 
    b.  Missing heartbeats allowed (missing-hb-allowed): This variable
        indicates the maximum number of consecutive heartbeat messages
@@ -2291,6 +2288,9 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    exchanged between DOTS agents during 'idle' time are marked as
    Confirmable messages.
 
+      Implementation Note: A DOTS client that receives a response in a
+      Confirmable message may want to clean up the message state right
+
 
 
 Reddy, et al.           Expires November 8, 2019               [Page 41]
@@ -2298,8 +2298,6 @@ Reddy, et al.           Expires November 8, 2019               [Page 41]
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
 
-      Implementation Note: A DOTS client that receives a response in a
-      Confirmable message may want to clean up the message state right
       after sending the ACK.  If that ACK is lost and the DOTS server
       retransmits the Confirmable message, the DOTS client may no longer
       have any state that would help it correlate this response: from
@@ -2346,6 +2344,8 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
          },
          "max-retransmit": {
            "max-value": number,
+           "min-value": number,
+           "current-value": number
 
 
 
@@ -2354,8 +2354,6 @@ Reddy, et al.           Expires November 8, 2019               [Page 42]
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
 
-           "min-value": number,
-           "current-value": number
          },
          "ack-timeout": {
            "max-value-decimal": "string",
@@ -2402,6 +2400,8 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
    The parameters in Figure 19 are described below:
 
+   mitigating-config:  Set of configuration parameters to use when a
+      mitigation is active.  The following parameters may be included:
 
 
 
@@ -2409,9 +2409,6 @@ Reddy, et al.           Expires November 8, 2019               [Page 43]
 
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
-
-   mitigating-config:  Set of configuration parameters to use when a
-      mitigation is active.  The following parameters may be included:
 
       heartbeat-interval:   Time interval in seconds between two
          consecutive heartbeat messages.
@@ -2458,6 +2455,9 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
          "heartbeat-interval": {
            "max-value": 240,
            "min-value": 15,
+           "current-value": 30
+         },
+         "missing-hb-allowed": {
 
 
 
@@ -2466,9 +2466,6 @@ Reddy, et al.           Expires November 8, 2019               [Page 44]
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
 
-           "current-value": 30
-         },
-         "missing-hb-allowed": {
            "max-value": 9,
            "min-value": 3,
            "current-value": 5
@@ -2514,6 +2511,9 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
            "max-value-decimal": "4.00",
            "min-value-decimal": "1.10",
            "current-value-decimal": "1.50"
+         }
+       }
+     }
 
 
 
@@ -2522,9 +2522,6 @@ Reddy, et al.           Expires November 8, 2019               [Page 45]
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
 
-         }
-       }
-     }
    }
 
             Figure 20: Example of a Configuration Response Body
@@ -2570,6 +2567,9 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
       session timeout to prevent translator traversal issues, or
       disabled entirely.  Means to discover the lifetime assigned by a
       translator are out of scope.
+
+
+
 
 
 
@@ -4344,10 +4344,10 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
 7.3.  DTLS MTU and Fragmentation
 
    To avoid DOTS signal message fragmentation and the subsequent
-   decreased probability of message delivery, DOTS agents MUST ensure
-   that the DTLS record MUST fit within a single datagram.  If the path
-   MTU is not known to the DOTS server, an IP MTU of 1280 bytes SHOULD
-   be assumed.  The DOTS client must consider the amount of record
+   decreased probability of message delivery, DOTS agents SHOULD ensure
+   that the DTLS record fit within a single datagram.  If the path MTU
+   is not known to the DOTS server, an IP MTU of 1280 bytes SHOULD be
+   assumed.  The DOTS client must consider the amount of record
    expansion expected by the DTLS processing when calculating the size
    of CoAP message that fits within the path MTU.  Path MTU MUST be
    greater than or equal to [CoAP message size + DTLS 1.2 overhead of 13

@@ -1640,7 +1640,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
             between the agents. <xref target="RFC7641"></xref> indicates that
             (1) a notification can be sent in a Confirmable or a
             Non-confirmable message, and (2) the message type used is
-            typically application dependent and may be determined by the
+            typically application-dependent and may be determined by the
             server for each notification individually. For DOTS server
             application, the message type MUST always be set to
             Non-confirmable even if the underlying COAP library elects a
@@ -1921,9 +1921,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
 
           <t>Once the active-but-terminating period elapses, the DOTS server
           MUST treat the mitigation as terminated, as the DOTS client is no
-          longer responsible for the mitigation. For example, if there is a
-          financial relationship between the DOTS client and server domains,
-          the DOTS client stops incurring cost at this point.</t>
+          longer responsible for the mitigation. </t>
 
           <t>If a mitigation is triggered due to a signal channel loss, the
           DOTS server relies upon normal triggers to stop that mitigation
@@ -3765,9 +3763,9 @@ Note that:
 
       <section anchor="mtu" title="DTLS MTU and Fragmentation">
         <t>To avoid DOTS signal message fragmentation and the subsequent
-        decreased probability of message delivery, DOTS agents MUST ensure
-        that the DTLS record MUST fit within a single datagram. If the path
-        MTU is not known to the DOTS server, an IP MTU of 1280 bytes SHOULD be
+        decreased probability of message delivery, DOTS agents SHOULD ensure
+        that the DTLS record fit within a single datagram. If the path MTU is
+        not known to the DOTS server, an IP MTU of 1280 bytes SHOULD be
         assumed. The DOTS client must consider the amount of record expansion
         expected by the DTLS processing when calculating the size of CoAP
         message that fits within the path MTU. Path MTU MUST be greater than
