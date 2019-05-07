@@ -1547,7 +1547,9 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
               <t hangText="bps-dropped:">The average number of dropped bytes
               per second for the mitigation request since the attack
               mitigation is triggered. This average SHOULD be over five-minute
-              intervals. <vspace blankLines="1" />This is an optional
+              intervals (that is, measuring bytes into five-minute buckets and
+              then averaging these buckets over the time since the mitigation
+              was triggered). <vspace blankLines="1" />This is an optional
               attribute.</t>
 
               <t hangText="pkts-dropped:">The total number of dropped packet
@@ -1559,8 +1561,10 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
               <t hangText="pps-dropped:">The average number of dropped packets
               per second for the mitigation request since the attack
               mitigation is triggered. This average SHOULD be over five-minute
-              intervals. <vspace blankLines="1" />This is an optional
-              attribute.</t>
+              intervals (that is, measuring packets into five-minute buckets
+              and then averaging these buckets over the time since the
+              mitigation was triggered).<vspace blankLines="1" />This is an
+              optional attribute.</t>
             </list></t>
 
           <t></t>
@@ -2748,9 +2752,9 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
           |     |     |         acl/type
           |     |     +--ro mid?                 -> ../../../mid
           |     +--ro bytes-dropped?          yang:zero-based-counter64
-          |     +--ro bps-dropped?            yang:zero-based-counter64
+          |     +--ro bps-dropped?            yang:gauge64
           |     +--ro pkts-dropped?           yang:zero-based-counter64
-          |     +--ro pps-dropped?            yang:zero-based-counter64
+          |     +--ro pps-dropped?            yang:gauge64
           |     +--rw attack-status?          iana-signal:attack-status
           +--:(signal-config)
           |  +--rw sid                   uint32
@@ -3226,13 +3230,13 @@ module ietf-dots-signal-channel {
            of counter64 for dropped bytes.";
       }
       leaf bps-dropped {
-        type yang:zero-based-counter64;
+        type yang:gauge64;
         config false;
         description
           "The average number of dropped bits per second for
            the mitigation request since the attack
-           mitigation is triggered.  This should be a
-           five-minute average.";
+           mitigation is triggered. This should be over
+           five-minute intervals.";
       }
       leaf pkts-dropped {
         type yang:zero-based-counter64;
@@ -3244,13 +3248,13 @@ module ietf-dots-signal-channel {
            the maximum value of counter64 for dropped packets.";
       }
       leaf pps-dropped {
-        type yang:zero-based-counter64;
+        type yang:gauge64;
         config false;
         description
           "The average number of dropped packets per second
            for the mitigation request since the attack
-           mitigation is triggered.  This should be a
-           five-minute average.";
+           mitigation is triggered. This should be over
+           five-minute intervals.";
       }
       leaf attack-status {
         type iana-signal:attack-status;
@@ -3537,15 +3541,11 @@ module ietf-dots-signal-channel {
    | bytes-dropped        | yang:zero-  |     |               |        |
    |                      |  based-     |     |               |        |
    |                      |  counter64  |  25 | 0 unsigned    | String |
-   | bps-dropped          | yang:zero-  |     |               |        |
-   |                      |  based-     |     |               |        |
-   |                      |  counter64  |  26 | 0 unsigned    | String |
+   | bps-dropped          | yang:gauge64|  26 | 0 unsigned    | String |
    | pkts-dropped         | yang:zero-  |     |               |        |
    |                      |  based-     |     |               |        |
    |                      |  counter64  |  27 | 0 unsigned    | String |
-   | pps-dropped          | yang:zero-  |     |               |        |
-   |                      |  based-     |     |               |        |
-   |                      |  counter64  |  28 | 0 unsigned    | String |
+   | pps-dropped          | yang:gauge64|  28 | 0 unsigned    | String |
    | attack-status        | enumeration |  29 | 0 unsigned    | String |
    | ietf-dots-signal-    |             |     |               |        |
    | channel:signal-config| container   |  30 | 5 map         | Object |

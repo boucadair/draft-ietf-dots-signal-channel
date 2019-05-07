@@ -132,7 +132,7 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
      5.3.  IETF DOTS Signal Channel YANG Module  . . . . . . . . . .  62
    6.  YANG/JSON Mapping Parameters to CBOR  . . . . . . . . . . . .  72
    7.  (D)TLS Protocol Profile and Performance Considerations  . . .  74
-     7.1.  (D)TLS Protocol Profile . . . . . . . . . . . . . . . . .  75
+     7.1.  (D)TLS Protocol Profile . . . . . . . . . . . . . . . . .  74
      7.2.  (D)TLS 1.3 Considerations . . . . . . . . . . . . . . . .  76
      7.3.  DTLS MTU and Fragmentation  . . . . . . . . . . . . . . .  78
    8.  Mutual Authentication of DOTS Agents & Authorization of DOTS
@@ -1763,7 +1763,9 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
    bps-dropped:  The average number of dropped bytes per second for the
       mitigation request since the attack mitigation is triggered.  This
-      average SHOULD be over five-minute intervals.
+      average SHOULD be over five-minute intervals (that is, measuring
+      bytes into five-minute buckets and then averaging these buckets
+      over the time since the mitigation was triggered).
 
       This is an optional attribute.
 
@@ -1776,13 +1778,11 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
    pps-dropped:  The average number of dropped packets per second for
       the mitigation request since the attack mitigation is triggered.
-      This average SHOULD be over five-minute intervals.
+      This average SHOULD be over five-minute intervals (that is,
+      measuring packets into five-minute buckets and then averaging
+      these buckets over the time since the mitigation was triggered).
 
       This is an optional attribute.
-
-
-
-
 
 
 
@@ -3175,9 +3175,9 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
            |     |     |         acl/type
            |     |     +--ro mid?                 -> ../../../mid
            |     +--ro bytes-dropped?          yang:zero-based-counter64
-           |     +--ro bps-dropped?            yang:zero-based-counter64
+           |     +--ro bps-dropped?            yang:gauge64
            |     +--ro pkts-dropped?           yang:zero-based-counter64
-           |     +--ro pps-dropped?            yang:zero-based-counter64
+           |     +--ro pps-dropped?            yang:gauge64
            |     +--rw attack-status?          iana-signal:attack-status
            +--:(signal-config)
            |  +--rw sid                   uint32
@@ -3726,13 +3726,13 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
               of counter64 for dropped bytes.";
          }
          leaf bps-dropped {
-           type yang:zero-based-counter64;
+           type yang:gauge64;
            config false;
            description
              "The average number of dropped bits per second for
               the mitigation request since the attack
-              mitigation is triggered.  This should be a
-              five-minute average.";
+              mitigation is triggered. This should be over
+              five-minute intervals.";
          }
          leaf pkts-dropped {
            type yang:zero-based-counter64;
@@ -3744,7 +3744,7 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
               the maximum value of counter64 for dropped packets.";
          }
          leaf pps-dropped {
-           type yang:zero-based-counter64;
+           type yang:gauge64;
            config false;
 
 
@@ -3757,8 +3757,8 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
            description
              "The average number of dropped packets per second
               for the mitigation request since the attack
-              mitigation is triggered.  This should be a
-              five-minute average.";
+              mitigation is triggered. This should be over
+              five-minute intervals.";
          }
          leaf attack-status {
            type iana-signal:attack-status;
@@ -4090,15 +4090,11 @@ Reddy, et al.           Expires November 8, 2019               [Page 73]
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
 
-   | bps-dropped          | yang:zero-  |     |               |        |
-   |                      |  based-     |     |               |        |
-   |                      |  counter64  |  26 | 0 unsigned    | String |
+   | bps-dropped          | yang:gauge64|  26 | 0 unsigned    | String |
    | pkts-dropped         | yang:zero-  |     |               |        |
    |                      |  based-     |     |               |        |
    |                      |  counter64  |  27 | 0 unsigned    | String |
-   | pps-dropped          | yang:zero-  |     |               |        |
-   |                      |  based-     |     |               |        |
-   |                      |  counter64  |  28 | 0 unsigned    | String |
+   | pps-dropped          | yang:gauge64|  28 | 0 unsigned    | String |
    | attack-status        | enumeration |  29 | 0 unsigned    | String |
    | ietf-dots-signal-    |             |     |               |        |
    | channel:signal-config| container   |  30 | 5 map         | Object |
@@ -4134,18 +4130,6 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
 7.  (D)TLS Protocol Profile and Performance Considerations
 
-
-
-
-
-
-
-
-Reddy, et al.           Expires November 8, 2019               [Page 74]
-
-Internet-Draft        DOTS Signal Channel Protocol              May 2019
-
-
 7.1.  (D)TLS Protocol Profile
 
    This section defines the (D)TLS protocol profile of DOTS signal
@@ -4154,6 +4138,14 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    There are known attacks on (D)TLS, such as man-in-the-middle and
    protocol downgrade attacks.  These are general attacks on (D)TLS and,
    as such, they are not specific to DOTS over (D)TLS; refer to the
+
+
+
+Reddy, et al.           Expires November 8, 2019               [Page 74]
+
+Internet-Draft        DOTS Signal Channel Protocol              May 2019
+
+
    (D)TLS RFCs for discussion of these security issues.  DOTS agents
    MUST adhere to the (D)TLS implementation recommendations and security
    considerations of [RFC7525] except with respect to (D)TLS version.
@@ -4193,15 +4185,6 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    environments where multiple virtual servers are reachable over a
    single IP address.  The DOTS client may or may not know if it is
    interacting with a DOTS server in a virtual server hosting
-
-
-
-
-Reddy, et al.           Expires November 8, 2019               [Page 75]
-
-Internet-Draft        DOTS Signal Channel Protocol              May 2019
-
-
    environment, so the DOTS client SHOULD include the DOTS server FQDN
    in the SNI extension.
 
@@ -4210,6 +4193,14 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
    o  DTLS record replay detection (Section 3.3 of [RFC6347]) or an
       equivalent mechanism to protect against replay attacks.
+
+
+
+
+Reddy, et al.           Expires November 8, 2019               [Page 75]
+
+Internet-Draft        DOTS Signal Channel Protocol              May 2019
+
 
    o  DTLS session resumption without server-side state to resume
       session and convey the DOTS signal.
@@ -4251,13 +4242,6 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
       server immediately responds with a DOTS mitigation response.  This
       assumes no packet loss is experienced.
 
-
-
-Reddy, et al.           Expires November 8, 2019               [Page 76]
-
-Internet-Draft        DOTS Signal Channel Protocol              May 2019
-
-
    o  0-RTT mode in which the DOTS client can authenticate itself and
       send DOTS mitigation request messages in the first message, thus
       reducing handshake latency. 0-RTT only works if the DOTS client
@@ -4266,6 +4250,13 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
       The DOTS client has to establish a (D)TLS session with the DOTS
       server during 'idle' time and share a PSK.
+
+
+
+Reddy, et al.           Expires November 8, 2019               [Page 76]
+
+Internet-Draft        DOTS Signal Channel Protocol              May 2019
+
 
       During a DDoS attack, the DOTS client can use the (D)TLS session
       to convey the DOTS mitigation request message and, if there is no
@@ -4305,6 +4296,15 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
       'sid' values will be rejected by the DOTS server if it maintains a
       higher numeric 'sid' value for this DOTS client.
 
+      Owing to the aforementioned protections, all DOTS signal channel
+      requests are safe to transmit in TLS 1.3 as early data.  Refer to
+      [I-D.boucadair-dots-earlydata] for more details.
+
+      A simplified TLS 1.3 handshake with 0-RTT DOTS mitigation request
+      message exchange is shown in Figure 27.
+
+
+
 
 
 
@@ -4313,13 +4313,6 @@ Reddy, et al.           Expires November 8, 2019               [Page 77]
 
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
-
-      Owing to the aforementioned protections, all DOTS signal channel
-      requests are safe to transmit in TLS 1.3 as early data.  Refer to
-      [I-D.boucadair-dots-earlydata] for more details.
-
-      A simplified TLS 1.3 handshake with 0-RTT DOTS mitigation request
-      message exchange is shown in Figure 27.
 
             DOTS Client                                    DOTS Server
 
@@ -4362,6 +4355,13 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    well with IPv6 and with most of today's IPv4 paths.  However, with
    IPv4, it is harder to safely make sure that there is no IP
    fragmentation.  If the IPv4 path MTU is unknown, implementations may
+   want to limit themselves to more conservative IPv4 datagram sizes
+   such as 576 bytes, as per [RFC0791].
+
+
+
+
+
 
 
 
@@ -4369,9 +4369,6 @@ Reddy, et al.           Expires November 8, 2019               [Page 78]
 
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
-
-   want to limit themselves to more conservative IPv4 datagram sizes
-   such as 576 bytes, as per [RFC0791].
 
 8.  Mutual Authentication of DOTS Agents & Authorization of DOTS Clients
 
@@ -4419,6 +4416,9 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
    Figure 28: Example of Authentication and Authorization of DOTS Agents
 
+   In the example depicted in Figure 28, the DOTS gateway and DOTS
+   clients within the 'example.com' domain mutually authenticate.  After
+
 
 
 Reddy, et al.           Expires November 8, 2019               [Page 79]
@@ -4426,8 +4426,6 @@ Reddy, et al.           Expires November 8, 2019               [Page 79]
 Internet-Draft        DOTS Signal Channel Protocol              May 2019
 
 
-   In the example depicted in Figure 28, the DOTS gateway and DOTS
-   clients within the 'example.com' domain mutually authenticate.  After
    the DOTS gateway validates the identity of a DOTS client, it
    communicates with the AAA server in the 'example.com' domain to
    determine if the DOTS client is authorized to request DDoS
@@ -4473,6 +4471,8 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    +----------+----------------+---------------------+-----------------+
 
                         Table 5: 'dots' well-known URI
+
+
 
 
 
