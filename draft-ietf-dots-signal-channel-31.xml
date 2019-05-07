@@ -558,25 +558,21 @@
             migrate the DOTS signal channel from TCP to UDP. Such probing
             SHOULD NOT be done more frequently than every 24 hours and MUST
             NOT be done more frequently than every 5 minutes.</t>
-
-            <t>If the DOTS signal channel session is established during an
-            attack time, the DOTS client SHOULD send the TCP SYNs and DTLS
-            ClientHello messages at the same time over IPv6 and IPv4 so that
-            the mitigation request can be sent as soon as the connection is
-            established on one of the transports and one of the address
-            families.</t>
           </list></t>
 
         <t><!--When connection attempts are made when no mitigation request is
 active, the DOTS client SHOULD use a "Connection Attempt Delay"
 [RFC8305] set to 5 seconds.
--->In reference to <xref target="fig_happy_eyeballs"></xref>, the DOTS client
-        proceeds with the connection attempts following the rules in <xref
-        target="RFC8305"></xref> because these attempts are made when no
-        attack traffic is present. In this example, it is assumed that the
-        IPv6 path is broken and UDP traffic is dropped by a middlebox but has
-        little impact to the DOTS client because there is no long delay before
-        using IPv4 and TCP.</t>
+-->When connection attempts are made during an attack congesting the network,
+        the DOTS client SHOULD use a "Connection Attempt Delay" <xref
+        target="RFC8305"></xref> set to 100 ms. </t>
+
+        <t>In reference to <xref target="fig_happy_eyeballs"></xref>, the DOTS
+        client proceeds with the connection attempts following the rules in
+        <xref target="RFC8305"></xref>. In this example, it is assumed that
+        the IPv6 path is broken and UDP traffic is dropped by a middlebox but
+        has little impact to the DOTS client because there is no long delay
+        before using IPv4 and TCP.</t>
 
         <t><figure anchor="fig_happy_eyeballs"
             title="DOTS Happy Eyeballs during Idle Time (Sample Flow)">
@@ -596,31 +592,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
 
   Note: 
    * Retransmission messages are not shown.
-   * T1-T0=T2-T1=T3-T2= Connection Attempt Delay [RFC8305].]]></artwork>
-          </figure></t>
-
-        <t>If the DOTS client has to establish a DOTS session during an attack
-        time under the same network conditions as in <xref
-        target="fig_happy_eyeballs"></xref>, it sends two TCP SYNs and two
-        DTLS ClientHello messages at the same time over IPv4 and IPv6 (<xref
-        target="fig_happy_eyeballs2"></xref>).</t>
-
-        <t><figure anchor="fig_happy_eyeballs2"
-            title="DOTS Happy Eyeballs during Attack Time (Sample Flow)">
-            <artwork align="center"><![CDATA[+-----------+                                           +-----------+
-|DOTS client|                                           |DOTS server|
-+-----------+                                           +-----------+
-      |                                                       |
-   T0 |--DTLS ClientHello, IPv6 ---->X                        |
-   T0 |--DTLS ClientHello, IPv4 ---->X                        |
-   T0 |--TCP SYN, IPv6-------------->X                        |
-   T0 |--TCP SYN, IPv4--------------------------------------->|
-      |<-TCP SYNACK-------------------------------------------|
-      |--TCP ACK--------------------------------------------->|
-      |<------------Establish TLS Session-------------------->|
-      |----------------DOTS signal--------------------------->|
-      |                                                       |
-]]></artwork>
+   * T1-T0=T2-T1=T3-T2= Connection Attempt Delay.]]></artwork>
           </figure></t>
 
         <t>A single DOTS signal channel between DOTS agents can be used to
@@ -4492,9 +4464,10 @@ Note that:
       authentication is used. Because the application data is TLS protected,
       this will not result in the application receiving bogus data, but it
       will constitute a DoS on the connection. This attack can be countered by
-      using TCP-AO <xref target="RFC5925"></xref>. If TCP-AO is used, then any
-      bogus packets injected by an attacker will be rejected by the TCP-AO
-      integrity check and therefore will never reach the TLS layer.</t>
+      using TCP-AO <xref target="RFC5925"></xref>. Although not widely
+      adopted, if TCP-AO is used, then any bogus packets injected by an
+      attacker will be rejected by the TCP-AO integrity check and therefore
+      will never reach the TLS layer. </t>
 
       <t>An attack vector that can be achieved if the 'cuid' is guessable is a
       misbehaving DOTS client from within the client's domain which uses the
@@ -4512,6 +4485,21 @@ Note that:
       certificate. Likewise, this attack is not possible with TLS 1.3 because
       most of the TLS handshake is encrypted and the client certificate is not
       visible to eavesdroppers.</t>
+
+      <t>A compromised DOTS client can collude with a DDoS attacker to send
+      mitigation request for a target resource, gets the mitigation efficacy
+      from the DOTS server, and conveys the mitigation efficacy to the DDoS
+      attacker to possibly change the DDoS attack strategy. Signaling an
+      attack by the compromised DOTS client to the DOTS server will trigger
+      attack mitigation. This attack can be prevented by monitoring and
+      auditing DOTS clients to detect misbehavior and to deter misuse, and by
+      authorizing the DOTS client to request mitigation for specific target
+      resources (e.g., an application server is authorized to request
+      mitigation for its IP addresses but a DDoS mitigator can request
+      mitigation for any target resource in the network). Furthermore, DOTS
+      clients are typically co-located on network security services (e.g.,
+      DDoS mitigator, firewall etc.) and a compromised security service
+      potentially can do a lot more damage to the network. </t>
 
       <t>Rate-limiting DOTS requests, including those with new 'cuid' values,
       from the same DOTS client defends against DoS attacks that would result
