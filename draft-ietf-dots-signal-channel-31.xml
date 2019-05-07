@@ -387,22 +387,18 @@
       encoding of YANG-modeled data. A similar effort for CBOR is defined in
       <xref target="I-D.ietf-core-yang-cbor"></xref>.</t>
 
-      <t>DOTS agents primarily determine that a CBOR data structure is a DOTS
-      signal channel object from the application context, such as from the
-      port number assigned to the DOTS signal channel. The other method DOTS
-      agents use to indicate that a CBOR data structure is a DOTS signal
-      channel object is the use of the "application/dots+cbor" content type
-      (<xref target="MediaReg"></xref>).</t>
+      <t>DOTS agents determine that a CBOR data structure is a DOTS signal
+      channel object from the application context, such as from the port
+      number assigned to the DOTS signal channel. The other method DOTS agents
+      use to indicate that a CBOR data structure is a DOTS signal channel
+      object is the use of the "application/dots+cbor" content type (<xref
+      target="MediaReg"></xref>).</t>
 
       <t>This document specifies a YANG module for representing DOTS
       mitigation scopes, DOTS signal channel session configuration data, and
-      DOTS redirected signaling (<xref target="YANG"></xref>). Representing
-      these data as CBOR data can either follow the rules in <xref
-      target="I-D.ietf-core-yang-cbor"></xref> or those in <xref
-      target="RFC7951"></xref> combined with JSON/CBOR conversion rules in
-      <xref target="RFC7049"></xref>; both approaches produce a valid
-      encoding. All parameters in the payload of the DOTS signal channel are
-      mapped to CBOR types as specified in <xref target="mapping"></xref>.</t>
+      DOTS redirected signaling (<xref target="YANG"></xref>). All parameters
+      in the payload of the DOTS signal channel are mapped to CBOR types as
+      specified in <xref target="mapping">Table 4</xref>.</t>
 
       <t>In order to prevent fragmentation, DOTS agents must follow the
       recommendations documented in Section 4.6 of <xref
@@ -533,7 +529,7 @@
         Eyeballs procedure are used by the DOTS client for sending its
         subsequent messages to the DOTS server. The difference in behavior
         with respect to the Happy Eyeballs mechanism <xref
-        target="RFC8305"></xref> are listed below: </t>
+        target="RFC8305"></xref> are listed below:</t>
 
         <t><list style="symbols">
             <t>The order of preference of the DOTS signal channel address
@@ -553,7 +549,7 @@
             the DOTS client has to re-establish the connection with the same
             DOTS server within few seconds after the Happy Eyeballs mechanism
             is completed, caching avoids trashing the network especially in
-            the presence of DDoS attack traffic. </t>
+            the presence of DDoS attack traffic.</t>
 
             <t>If DOTS signal channel session is established with TLS (but
             DTLS failed), the DOTS client periodically repeats the mechanism
@@ -568,7 +564,7 @@
             ClientHello messages at the same time over IPv6 and IPv4 so that
             the mitigation request can be sent as soon as the connection is
             established on one of the transports and one of the address
-            families. </t>
+            families.</t>
           </list></t>
 
         <t><!--When connection attempts are made when no mitigation request is
@@ -580,7 +576,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
         attack traffic is present. In this example, it is assumed that the
         IPv6 path is broken and UDP traffic is dropped by a middlebox but has
         little impact to the DOTS client because there is no long delay before
-        using IPv4 and TCP. </t>
+        using IPv4 and TCP.</t>
 
         <t><figure anchor="fig_happy_eyeballs"
             title="DOTS Happy Eyeballs during Idle Time (Sample Flow)">
@@ -779,7 +775,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
           target="Figure1c"></xref> uses the types defined in <xref
           target="mapping"></xref>. Note that this figure (and other similar
           figures depicting a schema) are non-normative sketches of the
-          structure of the message. </t>
+          structure of the message.</t>
 
           <t><figure anchor="Figure1c"
               title="PUT to Convey DOTS Mitigation Requests (Message Body Schema)">
@@ -1430,7 +1426,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
 
             <c>a</c>
 
-            <c> Return all descendant data nodes</c>
+            <c>Return all descendant data nodes</c>
           </texttable>
 
           <t>The DOTS client can use Block-wise transfer <xref
@@ -4586,7 +4582,7 @@ Note that:
       <t>Special thanks to Benjamin Kaduk for the detailed AD review.</t>
 
       <t>Thanks to Alexey Melnikov, Adam Roach, Suresh Krishnan, Mirja
-      K&uuml;hlewind, and Alissa Cooper for the review. </t>
+      K&uuml;hlewind, and Alissa Cooper for the review.</t>
     </section>
   </middle>
 
