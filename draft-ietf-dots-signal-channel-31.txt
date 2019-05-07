@@ -5134,15 +5134,15 @@ Internet-Draft        DOTS Signal Channel Protocol              May 2019
    mitigation request for a target resource, gets the mitigation
    efficacy from the DOTS server, and conveys the mitigation efficacy to
    the DDoS attacker to possibly change the DDoS attack strategy.
-   Signaling an attack by the compromised DOTS client to the DOTS server
-   will trigger attack mitigation.  This attack can be prevented by
-   monitoring and auditing DOTS clients to detect misbehavior and to
-   deter misuse, and by authorizing the DOTS client to request
-   mitigation for specific target resources (e.g., an application server
-   is authorized to request mitigation for its IP addresses but a DDoS
-   mitigator can request mitigation for any target resource in the
-   network).  Furthermore, DOTS clients are typically co-located on
-   network security services (e.g., DDoS mitigator, firewall etc.) and a
+   Obviously, signaling an attack by the compromised DOTS client to the
+   DOTS server will trigger attack mitigation.  This attack can be
+   prevented by monitoring and auditing DOTS clients to detect
+   misbehavior and to deter misuse, and by authorizing the DOTS client
+   to request mitigation for specific target resources (e.g., an
+   application server is authorized to request mitigation for its IP
+   addresses but a DDoS mitigator can request mitigation for any target
+   resource in the network).  Furthermore, DOTS clients are typically
+   co-located on network security services (e.g., firewall) and a
    compromised security service potentially can do a lot more damage to
    the network.
 
