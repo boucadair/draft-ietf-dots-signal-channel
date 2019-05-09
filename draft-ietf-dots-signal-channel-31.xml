@@ -353,18 +353,22 @@
       resources accessible using CoAP over UDP secured with DTLS and CoAP over
       TCP secured with TLS, respectively.</t>
 
-      <t>The signal channel is initiated by the DOTS client. The DOTS client
-      can then negotiate, configure, and retrieve the DOTS signal channel
-      session behavior with its DOTS peer (<xref target="sigconfig"></xref>).
-      Once the signal channel is established, the DOTS agents periodically
-      send heartbeats to keep the channel active (<xref target="hb"></xref>).
-      At any time, the DOTS client may send a mitigation request message
-      (<xref target="m_req"></xref>) to a DOTS server over the active signal
-      channel. While mitigation is active (because of the higher likelihood of
-      packet loss during a DDoS attack), the DOTS server periodically sends
-      status messages to the client, including basic mitigation feedback
-      details. Mitigation remains active until the DOTS client explicitly
-      terminates mitigation, or the mitigation lifetime expires.</t>
+      <t>The DOTS signal channel can be established between two DOTS agents
+      prior or during an attack. The DOTS signal channel is initiated by the
+      DOTS client. The DOTS client can then negotiate, configure, and retrieve
+      the DOTS signal channel session behavior with its DOTS peer (<xref
+      target="sigconfig"></xref>). Once the signal channel is established, the
+      DOTS agents periodically send heartbeats to keep the channel active
+      (<xref target="hb"></xref>). At any time, the DOTS client may send a
+      mitigation request message (<xref target="m_req"></xref>) to a DOTS
+      server over the active signal channel. While mitigation is active
+      (because of the higher likelihood of packet loss during a DDoS attack),
+      the DOTS server periodically sends status messages to the client,
+      including basic mitigation feedback details. Mitigation remains active
+      until the DOTS client explicitly terminates mitigation, or the
+      mitigation lifetime expires. Also, the DOTS server may rely on the
+      signal channel session loss to trigger mitigation for pre-configured
+      mitigation requests (if any). </t>
 
       <t>DOTS signaling can happen with DTLS over UDP and TLS over TCP.
       Likewise, DOTS requests may be sent using IPv4 or IPv6 transfer
@@ -997,11 +1001,10 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
 
           <t><xref target="Figure2"></xref> shows a PUT request example to
           signal that TCP port numbers 80, 8080, and 443 used by
-          2001:db8:6401::1 and 2001:db8:6401::2 servers are under attack
-          (illustrated in JSON encoding). The presence of 'cdid' indicates
-          that a server-domain DOTS gateway has modified the initial PUT
-          request sent by the DOTS client. Note that 'cdid' MUST NOT appear in
-          the PUT request message body.</t>
+          2001:db8:6401::1 and 2001:db8:6401::2 servers are under attack. The
+          presence of 'cdid' indicates that a server-domain DOTS gateway has
+          modified the initial PUT request sent by the DOTS client. Note that
+          'cdid' MUST NOT appear in the PUT request message body.</t>
 
           <t><figure anchor="Figure2"
               title="PUT for DOTS Mitigation Request (An Example)">
@@ -1151,12 +1154,6 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
           the attack. A DOTS server could reject mitigation requests when it
           is near capacity or needs to rate-limit a particular client, for
           example.</t>
-
-          <t>If the DOTS server finds the 'mid' parameter value conveyed in
-          the PUT request in its configuration data bound to that DOTS client,
-          it MAY update the mitigation request, and a 2.04 (Changed) response
-          is returned to indicate a successful update of the mitigation
-          request.</t>
 
           <t>The relative order of two mitigation requests, having the same
           'trigger-mitigation' type, from a DOTS client is determined by
@@ -1358,8 +1355,11 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
           request. This PUT request MUST use the same 'mid' value, and MUST
           repeat all the other parameters as sent in the original mitigation
           request apart from a possible change to the lifetime parameter
-          value. If this is not the case, the DOTS server MUST reject the
-          request with a 4.00 (Bad Request).</t>
+          value. In such case, the DOTS server MAY update the mitigation
+          request, and a 2.04 (Changed) response is returned to indicate a
+          successful update of the mitigation request. If this is not the
+          case, the DOTS server MUST reject the request with a 4.00 (Bad
+          Request). </t>
         </section>
 
         <section anchor="get"
