@@ -562,9 +562,9 @@
         <t><!--When connection attempts are made when no mitigation request is
 active, the DOTS client SHOULD use a "Connection Attempt Delay"
 [RFC8305] set to 5 seconds.
--->When connection attempts are made during an attack congesting the network,
-        the DOTS client SHOULD use a "Connection Attempt Delay" <xref
-        target="RFC8305"></xref> set to 100 ms. </t>
+-->When connection attempts are made during an attack, the DOTS client SHOULD
+        use a "Connection Attempt Delay" <xref target="RFC8305"></xref> set to
+        100 ms.</t>
 
         <t>In reference to <xref target="fig_happy_eyeballs"></xref>, the DOTS
         client proceeds with the connection attempts following the rules in
@@ -979,8 +979,14 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
 
           <t>FQDN and URI mitigation scopes may be thought of as a form of
           scope alias, in which the addresses associated with the domain name
-          or URI (as resolved by the DOTS server) represent the full scope of
-          the mitigation.</t>
+          or URI (as resolved by the DOTS server) represent the scope of the
+          mitigation. Particularly, the IP addresses to which the host
+          subcomponent of authority component of an URI resolves represent the
+          'target-prefix', the URI scheme represents the 'target-protocol',
+          the port subcomponent of authority component of an URI represents
+          the 'target-port-range'. If the optional port information is not
+          present in the authority component, the default port defined for the
+          URI scheme represents the 'target-port'. </t>
 
           <t>In the PUT request at least one of the attributes
           'target-prefix', 'target-fqdn','target-uri', or 'alias-name' MUST be
@@ -1352,7 +1358,8 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
           request. This PUT request MUST use the same 'mid' value, and MUST
           repeat all the other parameters as sent in the original mitigation
           request apart from a possible change to the lifetime parameter
-          value.</t>
+          value. If this is not the case, the DOTS server MUST reject the
+          request with a 4.00 (Bad Request).</t>
         </section>
 
         <section anchor="get"
@@ -1749,7 +1756,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
             mitigation status. Absent such policy, the frequency of polling
             the DOTS server to get the mitigation status SHOULD follow the
             transmission guidelines in Section 3.1.3 of <xref
-            target="RFC8085"></xref>. </t>
+            target="RFC8085"></xref>.</t>
 
             <t>If the DOTS server has been able to mitigate the attack and the
             attack has stopped, the DOTS server indicates as such in the
@@ -1925,7 +1932,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
 
           <t>Once the active-but-terminating period elapses, the DOTS server
           MUST treat the mitigation as terminated, as the DOTS client is no
-          longer responsible for the mitigation. </t>
+          longer responsible for the mitigation.</t>
 
           <t>If a mitigation is triggered due to a signal channel loss, the
           DOTS server relies upon normal triggers to stop that mitigation
@@ -2689,7 +2696,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
     <section anchor="YANG" title="DOTS Signal Channel YANG Modules">
       <t>This document defines a YANG <xref target="RFC7950"></xref> module
       for DOTS mitigation scope, DOTS signal channel session configuration
-      data, and DOTS redirection signalling.</t>
+      data, and DOTS redirection signaling.</t>
 
       <t>This YANG module (ietf-dots-signal-channel) defines the DOTS client
       interaction with the DOTS server as seen by the DOTS client. A DOTS
@@ -3493,7 +3500,13 @@ module ietf-dots-signal-channel {
     <section anchor="mapping" title="YANG/JSON Mapping Parameters to CBOR">
       <t>All parameters in the payload of the DOTS signal channel MUST be
       mapped to CBOR types as shown in Table 4 and are assigned an integer key
-      to save space. The CBOR key values are divided into two types:
+      to save space. <list style="symbols">
+          <t>Note: Implementers must check that the mapping output provided by
+          their YANG-to-CBOR encoding schemes is aligned with the content of
+          Table 4.</t>
+        </list></t>
+
+      <t>The CBOR key values are divided into two types:
       comprehension-required and comprehension-optional. DOTS agents can
       safely ignore comprehension-optional values they don't understand, but
       cannot successfully process a request if it contains
@@ -3778,8 +3791,7 @@ Note that:
         the PMTU is unknown, DOTS implementations MAY assume on a PMTU of 576
         bytes for IPv4 datagrams, as every IPv4 host must be capable of
         receiving a packet whose length is equal to 576 bytes as discussed in
-        <xref target="RFC0791"></xref> and <xref target="RFC1122"></xref>.
-        </t>
+        <xref target="RFC0791"></xref> and <xref target="RFC1122"></xref>.</t>
 
         <t>The DOTS client must consider the amount of record expansion
         expected by the DTLS processing when calculating the size of CoAP
@@ -4482,7 +4494,7 @@ Note that:
       using TCP-AO <xref target="RFC5925"></xref>. Although not widely
       adopted, if TCP-AO is used, then any bogus packets injected by an
       attacker will be rejected by the TCP-AO integrity check and therefore
-      will never reach the TLS layer. </t>
+      will never reach the TLS layer.</t>
 
       <t>An attack vector that can be achieved if the 'cuid' is guessable is a
       misbehaving DOTS client from within the client's domain which uses the
@@ -4508,13 +4520,13 @@ Note that:
       signaling an attack by the compromised DOTS client to the DOTS server
       will trigger attack mitigation. This attack can be prevented by
       monitoring and auditing DOTS clients to detect misbehavior and to deter
-      misuse, and by authorizing the DOTS client to request mitigation for
-      specific target resources (e.g., an application server is authorized to
-      request mitigation for its IP addresses but a DDoS mitigator can request
-      mitigation for any target resource in the network). Furthermore, DOTS
-      clients are typically co-located on network security services (e.g.,
-      firewall) and a compromised security service potentially can do a lot
-      more damage to the network. </t>
+      misuse, and by only authorizing the DOTS client to request mitigation
+      for specific target resources (e.g., an application server is authorized
+      to request mitigation for its IP addresses but a DDoS mitigator can
+      request mitigation for any target resource in the network). Furthermore,
+      DOTS clients are typically co-located on network security services
+      (e.g., firewall) and a compromised security service potentially can do a
+      lot more damage to the network.</t>
 
       <t>Rate-limiting DOTS requests, including those with new 'cuid' values,
       from the same DOTS client defends against DoS attacks that would result
