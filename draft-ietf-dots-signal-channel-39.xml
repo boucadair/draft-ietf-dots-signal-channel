@@ -2720,10 +2720,8 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
         <t>Under normal traffic conditions (i.e., no attack is ongoing), if a
         DOTS agent does not receive any response from the peer DOTS agent for
         'missing-hb-allowed' number of consecutive heartbeat messages, it
-        concludes that the DOTS signal channel session is disconnected. In
-        DOTS over TCP, the sender of a DOTS heartbeat message has to allow up
-        to 'heartbeat-interval' seconds when waiting for a heartbeat reply.
-        </t>
+        concludes that the DOTS signal channel session is disconnected. The
+        DOTS client MUST then try to resume the (D)TLS session.</t>
 
         <t>In case of a massive DDoS attack that saturates the incoming
         link(s) to the DOTS client, all traffic from the DOTS server to the
@@ -2773,6 +2771,12 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
         'missing-hb-allowed' threshold, the DOTS server concludes the session
         is disconnected. The DOTS server can then trigger pre-configured
         mitigation requests for this DOTS client (if any).</t>
+
+        <t>In DOTS over TCP, the sender of a DOTS heartbeat message has to
+        allow up to 'heartbeat-interval' seconds when waiting for a heartbeat
+        reply. When a failure is detected by a DOTS client, it proceeds with
+        the session recovery following the same approach as the one used for
+        unreliable transports. </t>
       </section>
     </section>
 
