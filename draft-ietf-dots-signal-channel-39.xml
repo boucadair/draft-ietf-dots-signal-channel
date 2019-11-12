@@ -2307,7 +2307,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
               <t>Note: heartbeat-interval should be tweaked to also assist
               DOTS messages for NAT traversal (SIG-011 of <xref
               target="RFC8612"></xref>). According to <xref
-              target="RFC8085"></xref>, keepalive messages must not be sent
+              target="RFC8085"></xref>, heartbeat messages must not be sent
               more frequently than once every 15 seconds and should use longer
               intervals when possible. Furthermore, <xref
               target="RFC4787"></xref> recommends NATs to use a state timeout
@@ -2322,7 +2322,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
               <t>A heartbeat-interval of 30 seconds may be considered as too
               chatty in some deployments. For such deployments, DOTS agents
               may negotiate longer heartbeat-interval values to prevent any
-              network overload with too frequent keepalives.</t>
+              network overload with too frequent heartbeats.</t>
 
               <t>Different heartbeat intervals can be defined for
               'mitigating-config' and 'idle-config' to reduce being too chatty
