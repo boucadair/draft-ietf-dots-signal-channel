@@ -2040,31 +2040,6 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
         switches from 'idle-config' to 'mitigating-config'-related
         values).</t>
 
-        <t>The specification allows for a flexible retry configuration when an
-        unreliable transport is in use. For example, a server may be tweaked
-        to return the following configuration to be used when a mitigation is
-        active:<list style="symbols">
-            <t>a 'max-retransmit' set to '1' together with a higher
-            'missing-hb-allowed' value (e.g., 34) and a default 'ack-timeout'
-            set to 2 seconds. This configuration implies more frequent
-            heartbeats in a given time span when a loss is encountered.</t>
-
-            <t>a lower 'missing-hb-allowed' (e.g., 7) value but delegate the
-            retransmission (with exponential back-off) to the underlying CoAP
-            library by setting 'max-retransmit' to a high value (e.g., 3).
-            When a loss is encountered, this configuration implies less
-            frequent heartbeats compared to the previous bullet.</t>
-
-            <t>a higher 'ack-timeout' value (e.g., 10 seconds), a
-            'max-retransmit' set to '1', and a 'missing-hb-allowed' value set
-            to 7. Compared to the previous bullet, this configuration reduces
-            by 50% the number of required heartbeats from the first
-            transmission of a heartbeat message to the time when the DOTS
-            agent gives up.</t>
-
-            <t>etc.</t>
-          </list></t>
-
         <t>CoAP Requests and responses are indicated for reliable delivery by
         marking them as Confirmable messages. DOTS signal channel session
         configuration requests and responses are marked as Confirmable
@@ -2706,13 +2681,19 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
         probes can also keep firewalls and/or stateful translators bindings
         alive. This probing reduces the frequency of establishing a new
         handshake when a DOTS signal needs to be conveyed to the DOTS
-        server.</t>
+        server.<list style="empty">
+            <t>Implementation Note: Given that CoAP roles can be multiplexed
+            over the same session as discussed in <xref
+            target="RFC7252"></xref> and already supported by CoAP
+            implementations, both the DOTS client and server can send DOTS
+            heartbeat requests.</t>
+          </list></t>
 
         <t>The DOTS Heartbeat mechanism uses non-confirmable GET requests
         (<xref target="hbreq"></xref>) with an expected 2.03 response (<xref
         target="hbrep"></xref>). The GET request used for DOTS heartbeat MUST
-        NOT have a 'cuid', 'cdid,' or 'mid' Uri-Path. Such GET requests are
-        not relayed by DOTS gateways. </t>
+        NOT have a 'cuid', 'cdid,' or 'mid' Uri-Path. Such GET requests MUST
+        NOT be relayed by DOTS gateways. </t>
 
         <t><figure anchor="hbreq"
             title="GET to Check Peer DOTS Agent is Responding">
