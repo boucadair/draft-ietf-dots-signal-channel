@@ -2303,7 +2303,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
           (2 seconds), max-retransmit (3), ack-random-factor (1.5). In
           addition to those parameters, the RECOMMENDED specific DOTS
           transmission parameter values are 'heartbeat-interval' (30 seconds)
-          and 'missing-hb-allowed' (5). <list style="empty">
+          and 'missing-hb-allowed' (10). <list style="empty">
               <t>Note: heartbeat-interval should be tweaked to also assist
               DOTS messages for NAT traversal (SIG-011 of <xref
               target="RFC8612"></xref>). According to <xref
@@ -3430,7 +3430,7 @@ module ietf-dots-signal-channel {
       }
       leaf current-value {
         type uint16;
-        default "5";
+        default "10";
         description
           "Current missing-hb-allowed value.";
       }

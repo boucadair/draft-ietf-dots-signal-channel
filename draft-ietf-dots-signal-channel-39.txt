@@ -2624,7 +2624,7 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
    retransmit (3), ack-random-factor (1.5).  In addition to those
    parameters, the RECOMMENDED specific DOTS transmission parameter
    values are 'heartbeat-interval' (30 seconds) and 'missing-hb-allowed'
-   (5).
+   (10).
 
 
 
@@ -3985,7 +3985,7 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
          }
          leaf current-value {
            type uint16;
-           default "5";
+           default "10";
            description
              "Current missing-hb-allowed value.";
          }
