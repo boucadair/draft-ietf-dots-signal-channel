@@ -3159,7 +3159,7 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
    The DOTS Heartbeat mechanism uses non-confirmable GET requests
    (Figure 27) with an expected 2.03 response (Figure 28).  The GET
-   request used for DOTS heartbeat MUST not have a 'cuid', 'cdid,' or
+   request used for DOTS heartbeat MUST NOT have a 'cuid', 'cdid,' or
    'mid' Uri-Path.  Such GET requests are not relayed by DOTS gateways.
 
         Header: GET (Code=0.01)

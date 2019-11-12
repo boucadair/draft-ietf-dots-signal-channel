@@ -2711,7 +2711,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
         <t>The DOTS Heartbeat mechanism uses non-confirmable GET requests
         (<xref target="hbreq"></xref>) with an expected 2.03 response (<xref
         target="hbrep"></xref>). The GET request used for DOTS heartbeat MUST
-        not have a 'cuid', 'cdid,' or 'mid' Uri-Path. Such GET requests are
+        NOT have a 'cuid', 'cdid,' or 'mid' Uri-Path. Such GET requests are
         not relayed by DOTS gateways. </t>
 
         <t><figure anchor="hbreq"
