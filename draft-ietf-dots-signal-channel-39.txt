@@ -2598,7 +2598,7 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
    retransmissions).  Message transmission parameters for CoAP are
    defined in Section 4.8 of [RFC7252].  The RECOMMENDED values of
    transmission parameter values are ack-timeout (2 seconds), max-
-   retransmit (3), ack-random-factor (1.5).  In addition to those
+   retransmit (3), and ack-random-factor (1.5).  In addition to those
    parameters, the RECOMMENDED specific DOTS transmission parameter
    values are 'heartbeat-interval' (30 seconds) and 'missing-hb-allowed'
    (15).
@@ -2640,6 +2640,12 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
       disabled entirely.  Means to discover the lifetime assigned by a
       translator are out of scope.
 
+      Section 4.7 of [RFC7252] defines PROBING_RATE as a limit for
+      sending with no response.  That is, the size of the heartbeat
+      request must not exceed (heartbeat-interval * PROBING_RATE) bytes.
+      In order to avoid slowing down heartbeat exchanges, it is
+      RECOMMENDED to set PROBING_RATE to at least 5 byte/second.
+
    If the DOTS agent wishes to change the default values of message
    transmission parameters, it SHOULD follow the guidance given in
    Section 4.8.1 of [RFC7252].  The DOTS agents MUST use the negotiated
@@ -2675,12 +2681,6 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
         channel).
 
         This is a mandatory attribute.
-
-
-
-
-
-
 
 
 
@@ -3106,20 +3106,20 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
       by CoAP implementations, both the DOTS client and server can send
       DOTS heartbeat requests.
 
-   The DOTS Heartbeat mechanism uses non-confirmable GET requests
-   (Figure 27) with an expected 2.03 response (Figure 28).  The GET
+   The DOTS Heartbeat mechanism uses non-confirmable POST requests
+   (Figure 27) with an expected 2.04 response (Figure 28).  The POST
    request used for DOTS heartbeat MUST NOT have a 'cuid', 'cdid,' or
-   'mid' Uri-Path.  Such GET requests MUST NOT be relayed by DOTS
+   'mid' Uri-Path.  Such POST requests MUST NOT be relayed by DOTS
    gateways.
 
-        Header: GET (Code=0.01)
+        Header: POST (Code=0.02)
         Uri-Path: ".well-known"
         Uri-Path: "dots"
         Uri-Path: "hb"
 
-           Figure 27: GET to Check Peer DOTS Agent is Responding
+          Figure 27: POST to Check Peer DOTS Agent is Responding
 
-        Header: (Code=2.03)
+        Header: (Code=2.04)
 
 
                 Figure 28: Response to a Heartbeat Request

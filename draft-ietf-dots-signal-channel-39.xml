@@ -2275,7 +2275,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
           retransmissions). Message transmission parameters for CoAP are
           defined in Section 4.8 of <xref target="RFC7252"></xref>. The
           RECOMMENDED values of transmission parameter values are ack-timeout
-          (2 seconds), max-retransmit (3), ack-random-factor (1.5). In
+          (2 seconds), max-retransmit (3), and ack-random-factor (1.5). In
           addition to those parameters, the RECOMMENDED specific DOTS
           transmission parameter values are 'heartbeat-interval' (30 seconds)
           and 'missing-hb-allowed' (15). <list style="empty">
@@ -2309,6 +2309,13 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
               the translator session timeout to prevent translator traversal
               issues, or disabled entirely. Means to discover the lifetime
               assigned by a translator are out of scope.</t>
+
+              <t>Section 4.7 of <xref target="RFC7252"></xref> defines
+              PROBING_RATE as a limit for sending with no response. That is,
+              the size of the heartbeat request must not exceed
+              (heartbeat-interval * PROBING_RATE) bytes. In order to avoid
+              slowing down heartbeat exchanges, it is RECOMMENDED to set
+              PROBING_RATE to at least 5 byte/second.</t>
             </list></t>
 
           <t>If the DOTS agent wishes to change the default values of message
@@ -2689,15 +2696,15 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
             heartbeat requests.</t>
           </list></t>
 
-        <t>The DOTS Heartbeat mechanism uses non-confirmable GET requests
-        (<xref target="hbreq"></xref>) with an expected 2.03 response (<xref
-        target="hbrep"></xref>). The GET request used for DOTS heartbeat MUST
-        NOT have a 'cuid', 'cdid,' or 'mid' Uri-Path. Such GET requests MUST
+        <t>The DOTS Heartbeat mechanism uses non-confirmable POST requests
+        (<xref target="hbreq"></xref>) with an expected 2.04 response (<xref
+        target="hbrep"></xref>). The POST request used for DOTS heartbeat MUST
+        NOT have a 'cuid', 'cdid,' or 'mid' Uri-Path. Such POST requests MUST
         NOT be relayed by DOTS gateways. </t>
 
         <t><figure anchor="hbreq"
-            title="GET to Check Peer DOTS Agent is Responding">
-            <artwork><![CDATA[     Header: GET (Code=0.01)
+            title="POST to Check Peer DOTS Agent is Responding">
+            <artwork><![CDATA[     Header: POST (Code=0.02)
      Uri-Path: ".well-known"
      Uri-Path: "dots"
      Uri-Path: "hb"
@@ -2705,7 +2712,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
           </figure></t>
 
         <t><figure anchor="hbrep" title="Response to a Heartbeat Request">
-            <artwork><![CDATA[     Header: (Code=2.03)
+            <artwork><![CDATA[     Header: (Code=2.04)
 
 ]]></artwork>
           </figure></t>
