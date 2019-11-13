@@ -2111,6 +2111,11 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
         "min-value": number,
         "current-value": number
       },
+      "probing-rate": {
+        "max-value": number,
+        "min-value": number,
+        "current-value": number
+      },
       "max-retransmit": {
         "max-value": number,
         "min-value": number,
@@ -2134,6 +2139,11 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
         "current-value": number
       },
       "missing-hb-allowed": {
+        "max-value": number,
+        "min-value": number,
+        "current-value": number
+      },
+      "probing-rate": {
         "max-value": number,
         "min-value": number,
         "current-value": number
@@ -2177,6 +2187,12 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
                   disconnected. <vspace blankLines="1" />This is an optional
                   attribute.</t>
 
+                  <t hangText="probing-rate:">The data rate that must not be
+                  exceeded by a DOTS agent in sending to a peer DOTS agent
+                  that does not respond (referred to as PROBING_RATE parameter
+                  in CoAP). <vspace blankLines="1" />This is an optional
+                  attribute.</t>
+
                   <t hangText="max-retransmit: ">Maximum number of
                   retransmissions for a message (referred to as MAX_RETRANSMIT
                   parameter in CoAP). <vspace blankLines="1" />This is an
@@ -2218,6 +2234,11 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
         "min-value": 3,
         "current-value": 5
       },
+      "probing-rate": {
+        "max-value": 10,
+        "min-value": 1,
+        "current-value": 5
+      },
       "max-retransmit": {
         "max-value": 15,
         "min-value": 2,
@@ -2243,6 +2264,11 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
       "missing-hb-allowed": {
         "max-value": 9,
         "min-value": 3,
+        "current-value": 5
+      },
+      "probing-rate": {
+        "max-value": 10,
+        "min-value": 1,
         "current-value": 5
       },
       "max-retransmit": {
@@ -2274,11 +2300,12 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
           parameters for the signal channel (e.g., heartbeat interval, maximum
           retransmissions). Message transmission parameters for CoAP are
           defined in Section 4.8 of <xref target="RFC7252"></xref>. The
-          RECOMMENDED values of transmission parameter values are ack-timeout
-          (2 seconds), max-retransmit (3), and ack-random-factor (1.5). In
-          addition to those parameters, the RECOMMENDED specific DOTS
-          transmission parameter values are 'heartbeat-interval' (30 seconds)
-          and 'missing-hb-allowed' (15). <list style="empty">
+          RECOMMENDED values of transmission parameter values are probing-rate
+          (5 byte/second), ack-timeout (2 seconds), max-retransmit (3), and
+          ack-random-factor (1.5). In addition to those parameters, the
+          RECOMMENDED specific DOTS transmission parameter values are
+          'heartbeat-interval' (30 seconds) and 'missing-hb-allowed' (15).
+          <list style="empty">
               <t>Note: heartbeat-interval should be tweaked to also assist
               DOTS messages for NAT traversal (SIG-011 of <xref
               target="RFC8612"></xref>). According to <xref
@@ -2310,12 +2337,10 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
               issues, or disabled entirely. Means to discover the lifetime
               assigned by a translator are out of scope.</t>
 
-              <t>Section 4.7 of <xref target="RFC7252"></xref> defines
-              PROBING_RATE as a limit for sending with no response. That is,
-              the size of the heartbeat request must not exceed
-              (heartbeat-interval * PROBING_RATE) bytes. In order to avoid
-              slowing down heartbeat exchanges, it is RECOMMENDED to set
-              PROBING_RATE to at least 5 byte/second.</t>
+              <t>Given that the size of the heartbeat request can not exceed
+              (heartbeat-interval * probing-rate) bytes, probing-rate should
+              be set to at least 5 byte/second to avoid slowing down heartbeat
+              exchanges.</t>
             </list></t>
 
           <t>If the DOTS agent wishes to change the default values of message
@@ -2366,6 +2391,9 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
         "missing-hb-allowed": {
           "current-value": number
         },
+        "probing-rate": {
+          "current-value": number
+        },
         "max-retransmit": {
           "current-value": number
         },
@@ -2381,6 +2409,9 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
           "current-value": number
         },
         "missing-hb-allowed": {
+          "current-value": number
+        },
+        "probing-rate": {
           "current-value": number
         },
         "max-retransmit": {
@@ -2402,12 +2433,12 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
           target="discovery"></xref>.</t>
 
           <t>At least one of the attributes 'heartbeat-interval',
-          'missing-hb-allowed', 'max-retransmit', 'ack-timeout', and
-          'ack-random-factor' MUST be present in the PUT request. Note that
-          'heartbeat-interval', 'missing-hb-allowed', 'max-retransmit',
-          'ack-timeout', and 'ack-random-factor', if present, do not need to
-          be provided for both 'mitigating-config', and 'idle-config' in a PUT
-          request.</t>
+          'missing-hb-allowed', 'probing-rate', 'max-retransmit',
+          'ack-timeout', and 'ack-random-factor' MUST be present in the PUT
+          request. Note that 'heartbeat-interval', 'missing-hb-allowed',
+          'probing-rate', 'max-retransmit', 'ack-timeout', and
+          'ack-random-factor', if present, do not need to be provided for both
+          'mitigating-config', and 'idle-config' in a PUT request.</t>
 
           <t>The PUT request with a higher numeric 'sid' value overrides the
           DOTS signal channel session configuration data installed by a PUT
@@ -2439,6 +2470,9 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
         },
         "missing-hb-allowed": {
           "current-value": 3
+        },
+        "probing-rate": {
+          "current-value": 5
         },
         "max-retransmit": {
           "current-value": 3
@@ -2868,6 +2902,10 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
           |  |  |  +--ro max-value?       uint16
           |  |  |  +--ro min-value?       uint16
           |  |  |  +--rw current-value?   uint16
+          |  |  +--rw probing-rate
+          |  |  |  +--ro max-value?       uint16
+          |  |  |  +--ro min-value?       uint16
+          |  |  |  +--rw current-value?   uint16
           |  |  +--rw max-retransmit
           |  |  |  +--ro max-value?       uint16
           |  |  |  +--ro min-value?       uint16
@@ -2886,6 +2924,10 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
           |     |  +--ro min-value?       uint16
           |     |  +--rw current-value?   uint16
           |     +--rw missing-hb-allowed
+          |     |  +--ro max-value?       uint16
+          |     |  +--ro min-value?       uint16
+          |     |  +--rw current-value?   uint16
+          |     +--rw probing-rate
           |     |  +--ro max-value?       uint16
           |     |  +--ro min-value?       uint16
           |     |  +--rw current-value?   uint16
@@ -3097,7 +3139,7 @@ module iana-dots-signal-channel {
         target="I-D.ietf-dots-data-channel"></xref>.</t>
 
         <t><figure>
-            <artwork><![CDATA[<CODE BEGINS> file "ietf-dots-signal-channel@2019-01-17.yang"
+            <artwork><![CDATA[<CODE BEGINS> file "ietf-dots-signal-channel@2019-11-13.yang"
 module ietf-dots-signal-channel {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-dots-signal-channel";
@@ -3158,7 +3200,7 @@ module ietf-dots-signal-channel {
      This version of this YANG module is part of RFC XXXX; see
      the RFC itself for full legal notices.";
 
-  revision 2019-01-17 {
+  revision 2019-11-13 {
     description
       "Initial revision.";
     reference
@@ -3427,6 +3469,31 @@ module ietf-dots-signal-channel {
           "Current missing-hb-allowed value.";
       }
     }
+    container probing-rate {
+      description
+        "The limit for sending with no response.";
+      leaf max-value {
+        type uint16;
+        units "byte/second";
+        config false;
+        description
+          "Maximum acceptable probing-rate value.";
+      }
+      leaf min-value {
+        type uint16;
+        units "byte/second";
+        config false;
+        description
+          "Minimum acceptable  probing-rate value.";
+      }
+      leaf current-value {
+        type uint16;
+        units "byte/second";
+        default "5";
+        description
+          "Current  probing-rate value.";
+      }
+    }
     container max-retransmit {
       description
         "Maximum number of retransmissions of a Confirmable
@@ -3688,6 +3755,7 @@ module ietf-dots-signal-channel {
    | alt-server-record    | leaf-list   |  48 | 4 array       | Array  |
    |                      | inet:       |     |               |        |
    |                      |  ip-address |     | 3 text string | String |
+   | probing-rate         | container   |  49 | 5 map         | Object |
    +----------------------+-------------+-----+---------------+--------+
 
    Table 4: CBOR Key Values Used in DOTS Signal Channel Messages & Their
@@ -4253,6 +4321,7 @@ Note that:
    | nel:redirected-signal|       |       |            |               |
    | alt-server           |   47  |   3   |    IESG    |   [RFCXXXX]   |
    | alt-server-record    |   48  |   4   |    IESG    |   [RFCXXXX]   |
+   | probing-rate         |   49  |   5   |    IESG    |   [RFCXXXX]   |
    +----------------------+-------+-------+------------+---------------+
 
         Table 6: Initial DOTS Signal Channel CBOR Key Values Registry
