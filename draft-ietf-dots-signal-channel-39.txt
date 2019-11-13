@@ -2624,8 +2624,8 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
    parameters for the signal channel (e.g., heartbeat interval, maximum
    retransmissions).  Message transmission parameters for CoAP are
    defined in Section 4.8 of [RFC7252].  The RECOMMENDED values of
-   transmission parameter values are probing-rate (5 byte/second), ack-
-   timeout (2 seconds), max-retransmit (3), and ack-random-factor (1.5).
+   transmission parameter values are ack-timeout (2 seconds), max-
+   retransmit (3), and ack-random-factor (1.5).  In addition to those
 
 
 
@@ -2634,9 +2634,9 @@ Reddy, et al.             Expires May 16, 2020                 [Page 47]
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
 
-   In addition to those parameters, the RECOMMENDED specific DOTS
-   transmission parameter values are 'heartbeat-interval' (30 seconds)
-   and 'missing-hb-allowed' (15).
+   parameters, the RECOMMENDED specific DOTS transmission parameter
+   values are 'heartbeat-interval' (30 seconds) and 'missing-hb-allowed'
+   (15).
 
       Note: heartbeat-interval should be tweaked to also assist DOTS
       messages for NAT traversal (SIG-011 of [RFC8612]).  According to
@@ -4034,7 +4034,6 @@ Reddy, et al.             Expires May 16, 2020                 [Page 72]
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
 
-           default "5";
            description
              "Current  probing-rate value.";
          }
@@ -4082,6 +4081,7 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
            config false;
            description
              "Minimum ack-timeout value.";
+         }
 
 
 
@@ -4090,7 +4090,6 @@ Reddy, et al.             Expires May 16, 2020                 [Page 73]
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
 
-         }
          leaf current-value-decimal {
            type decimal64 {
              fraction-digits 2;
@@ -4138,6 +4137,7 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
        leaf sid {
          type uint32;
          mandatory true;
+         description
 
 
 
@@ -4146,7 +4146,6 @@ Reddy, et al.             Expires May 16, 2020                 [Page 74]
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
 
-         description
            "An identifier for the DOTS signal channel
             session configuration data.";
        }
@@ -4194,6 +4193,7 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
           or a redirected signal message.";
        choice message-type {
          description
+           "Can be a mitigation, a configuration, or a redirect
 
 
 
@@ -4202,7 +4202,6 @@ Reddy, et al.             Expires May 16, 2020                 [Page 75]
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
 
-           "Can be a mitigation, a configuration, or a redirect
             message.";
          case mitigation-scope {
            description
@@ -4250,6 +4249,7 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
    |                      | Type        | Key |    Type &     | Type   |
    |                      |             |     | Information   |        |
    +----------------------+-------------+-----+---------------+--------+
+   | ietf-dots-signal-cha |             |     |               |        |
 
 
 
@@ -4258,7 +4258,6 @@ Reddy, et al.             Expires May 16, 2020                 [Page 76]
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
 
-   | ietf-dots-signal-cha |             |     |               |        |
    | nnel:mitigation-scope| container   |   1 | 5 map         | Object |
    | scope                | list        |   2 | 4 array       | Array  |
    | cdid                 | string      |   3 | 3 text string | String |
@@ -4306,6 +4305,7 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
    | channel:signal-config| container   |  30 | 5 map         | Object |
    | sid                  | uint32      |  31 | 0 unsigned    | Number |
    | mitigating-config    | container   |  32 | 5 map         | Object |
+   | heartbeat-interval   | container   |  33 | 5 map         | Object |
 
 
 
@@ -4314,7 +4314,6 @@ Reddy, et al.             Expires May 16, 2020                 [Page 77]
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
 
-   | heartbeat-interval   | container   |  33 | 5 map         | Object |
    | max-value            | uint16      |  34 | 0 unsigned    | Number |
    | min-value            | uint16      |  35 | 0 unsigned    | Number |
    | current-value        | uint16      |  36 | 0 unsigned    | Number |
@@ -4362,6 +4361,7 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
    When a DOTS client is configured with a domain name of the DOTS
    server, and connects to its configured DOTS server, the server may
+   present it with a PKIX certificate.  In order to ensure proper
 
 
 
@@ -4370,7 +4370,6 @@ Reddy, et al.             Expires May 16, 2020                 [Page 78]
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
 
-   present it with a PKIX certificate.  In order to ensure proper
    authentication, a DOTS client MUST verify the entire certification
    path per [RFC5280].  Additionally, the DOTS client MUST use [RFC6125]
    validation techniques to compare the domain name with the certificate
@@ -4416,6 +4415,7 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
       [RFC4279] with (EC)DHE key exchange which reduces the size of the
       ServerHello, and can be used by DOTS agents that cannot obtain
       certificates.
+
 
 
 

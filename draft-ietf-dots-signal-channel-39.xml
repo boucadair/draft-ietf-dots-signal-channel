@@ -2300,12 +2300,11 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
           parameters for the signal channel (e.g., heartbeat interval, maximum
           retransmissions). Message transmission parameters for CoAP are
           defined in Section 4.8 of <xref target="RFC7252"></xref>. The
-          RECOMMENDED values of transmission parameter values are probing-rate
-          (5 byte/second), ack-timeout (2 seconds), max-retransmit (3), and
-          ack-random-factor (1.5). In addition to those parameters, the
-          RECOMMENDED specific DOTS transmission parameter values are
-          'heartbeat-interval' (30 seconds) and 'missing-hb-allowed' (15).
-          <list style="empty">
+          RECOMMENDED values of transmission parameter values are ack-timeout
+          (2 seconds), max-retransmit (3), and ack-random-factor (1.5). In
+          addition to those parameters, the RECOMMENDED specific DOTS
+          transmission parameter values are 'heartbeat-interval' (30 seconds)
+          and 'missing-hb-allowed' (15). <list style="empty">
               <t>Note: heartbeat-interval should be tweaked to also assist
               DOTS messages for NAT traversal (SIG-011 of <xref
               target="RFC8612"></xref>). According to <xref
@@ -3490,7 +3489,6 @@ module ietf-dots-signal-channel {
       leaf current-value {
         type uint16;
         units "byte/second";
-        default "5";
         description
           "Current  probing-rate value.";
       }
