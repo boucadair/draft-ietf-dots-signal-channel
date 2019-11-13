@@ -2339,8 +2339,9 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
 
               <t>Given that the size of the heartbeat request can not exceed
               (heartbeat-interval * probing-rate) bytes, probing-rate should
-              be set to at least 5 byte/second to avoid slowing down heartbeat
-              exchanges.</t>
+              be set appropriately to avoid slowing down heartbeat exchanges.
+              For example, probing-rate may be set to "size of encrypted DOTS
+              heartbeat request/heartbeat-interval).</t>
             </list></t>
 
           <t>If the DOTS agent wishes to change the default values of message
