@@ -2013,7 +2013,8 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
 
             <t>Acceptable signal loss ratio: Maximum retransmissions,
             retransmission timeout value, and other message transmission
-            parameters for the DOTS signal channel.</t>
+            parameters for Confirmable messages over the DOTS signal channel.
+            </t>
           </list></t>
 
         <t>When the DOTS signal channel is established over a reliable
@@ -2060,8 +2061,8 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
         it in a new Confirmable message which in turn needs to be acknowledged
         by the DOTS client (see Sections 5.2.1 and 5.2.2 of <xref
         target="RFC7252"></xref>). Requests and responses exchanged between
-        DOTS agents during 'idle' time are marked as Confirmable
-        messages.<list style="empty">
+        DOTS agents during 'idle' time, except heartbeat messages, are marked
+        as Confirmable messages.<list style="empty">
             <t>Implementation Note: A DOTS client that receives a response in
             a Confirmable message may want to clean up the message state right
             after sending the ACK. If that ACK is lost and the DOTS server
@@ -2339,8 +2340,11 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
               <t>Given that the size of the heartbeat request can not exceed
               (heartbeat-interval * probing-rate) bytes, probing-rate should
               be set appropriately to avoid slowing down heartbeat exchanges.
-              For example, probing-rate may be set to "size of encrypted DOTS
-              heartbeat request/heartbeat-interval).</t>
+              For example, probing-rate may be set to ("size of encrypted DOTS
+              heartbeat request"/heartbeat-interval). Absent any explicit
+              configuration or inability to dynamically adjust probing-rate
+              values (Section 4.8.1 of <xref target="RFC7252"></xref>), DOTS
+              agents use 3 bytes/second as a default probing-rate value. </t>
             </list></t>
 
           <t>If the DOTS agent wishes to change the default values of message
@@ -2730,20 +2734,39 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
             heartbeat requests.</t>
           </list></t>
 
-        <t>The DOTS Heartbeat mechanism uses non-confirmable POST requests
+        <t>The DOTS Heartbeat mechanism uses non-confirmable PUT requests
         (<xref target="hbreq"></xref>) with an expected 2.04 (Changed)
-        Response Code (<xref target="hbrep"></xref>). The POST request used
-        for DOTS heartbeat MUST NOT have a 'cuid', 'cdid,' or 'mid' Uri-Path.
-        Such POST requests MUST NOT be relayed by DOTS gateways. </t>
+        Response Code (<xref target="hbrep"></xref>). The PUT request used for
+        DOTS heartbeat MUST NOT have a 'cuid', 'cdid,' or 'mid' Uri-Path. Such
+        PUT requests MUST NOT be relayed by DOTS gateways. </t>
 
         <t><figure anchor="hbreq"
-            title="POST to Check Peer DOTS Agent is Responding">
-            <artwork><![CDATA[     Header: POST (Code=0.02)
+            title="PUT to Check Peer DOTS Agent is Responding">
+            <artwork><![CDATA[     Header: PUT (Code=0.03)
      Uri-Path: ".well-known"
      Uri-Path: "dots"
-     Uri-Path: "hb"
+     Uri-Path: "hb"  
+     Content-Format: "application/dots+cbor"
+
+    {
+      "ietf-dots-signal-channel:heartbeat": {
+         "peer-hb-status": true;       
+       }
+    }
 ]]></artwork>
           </figure></t>
+
+        <t>The mandatory 'peer-hb-status' attribute is set to 'true' (or
+        'false') to indicates that a DOTS agent is (or not) receiving
+        heartbeat messages from its peer in the last (2 * heartbeat-interval)
+        period. Such information can be used by a peer DOTS agent to detect or
+        confirm connectivity issues and react accordingly. For example, if the
+        DOTS client receives 2.04 response for its heartbeat messages but no
+        server-initiated heartbeat messages, the DOTS client set
+        'peer-hb-status" to 'false'. The DOTS server will need then to try
+        another strategy for sending the heartbeats (e.g., adjust the
+        heartbeat interval, send a server-initiated heartbeat immediately
+        after receiving a client-initiated heartbeat message).</t>
 
         <t><figure anchor="hbrep" title="Response to a DOTS Heartbeat Request">
             <artwork><![CDATA[     Header: (Code=2.04)
@@ -2944,8 +2967,10 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
           |        +--ro min-value-decimal?       decimal64
           |        +--rw current-value-decimal?   decimal64
           +--:(redirected-signal)
-             +--ro alt-server            string
-             +--ro alt-server-record*    inet:ip-address
+          |  +--ro alt-server            string
+          |  +--ro alt-server-record*    inet:ip-address
+          +--:(heartbeat)
+             +--rw peer-hb-status              boolean
 ]]></artwork>
           </figure></t>
       </section>
@@ -3471,7 +3496,8 @@ module ietf-dots-signal-channel {
     }
     container probing-rate {
       description
-        "The limit for sending with no response.";
+        "The limit for sending non-confirmable messages with
+         no response.";
       leaf max-value {
         type uint16;
         units "byte/second";
@@ -3484,13 +3510,13 @@ module ietf-dots-signal-channel {
         units "byte/second";
         config false;
         description
-          "Minimum acceptable  probing-rate value.";
+          "Minimum acceptable probing-rate value.";
       }
       leaf current-value {
         type uint16;
         units "byte/second";
         description
-          "Current  probing-rate value.";
+          "Current probing-rate value.";
       }
     }
     container max-retransmit {
@@ -3649,6 +3675,17 @@ module ietf-dots-signal-channel {
           "Redirected signaling.";
         uses redirected-signal;
       }
+      case heartbeat {
+        description
+          "DOTS heartbeats.";
+        leaf peer-hb-status {
+          type boolean;
+          mandatory true;
+          description
+            "Indicates whether a DOTS agent receives heartbeats
+             from its peer.";
+        }
+      }
     }
   }
 }
@@ -3755,6 +3792,8 @@ module ietf-dots-signal-channel {
    |                      | inet:       |     |               |        |
    |                      |  ip-address |     | 3 text string | String |
    | probing-rate         | container   |  49 | 5 map         | Object |
+   | peer-hb-status       | boolean     |  4A | 7 bits 20     | False  |
+   |                      |             |     | 7 bits 21     | True   |
    +----------------------+-------------+-----+---------------+--------+
 
    Table 4: CBOR Key Values Used in DOTS Signal Channel Messages & Their
@@ -4321,6 +4360,7 @@ Note that:
    | alt-server           |   47  |   3   |    IESG    |   [RFCXXXX]   |
    | alt-server-record    |   48  |   4   |    IESG    |   [RFCXXXX]   |
    | probing-rate         |   49  |   5   |    IESG    |   [RFCXXXX]   |
+   | peer-hb-status       |   4A  |   7   |    IESG    |   [RFCXXXX]   |
    +----------------------+-------+-------+------------+---------------+
 
         Table 6: Initial DOTS Signal Channel CBOR Key Values Registry
