@@ -2553,9 +2553,9 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
            "current-value": 5
          },
          "probing-rate": {
-           "max-value": 10,
+           "max-value": 50,
            "min-value": 1,
-           "current-value": 5
+           "current-value": 15
          },
          "max-retransmit": {
            "max-value": 15,
@@ -2593,9 +2593,9 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
            "current-value": 5
          },
          "probing-rate": {
-           "max-value": 10,
+           "max-value": 50,
            "min-value": 1,
-           "current-value": 5
+           "current-value": 15
          },
          "max-retransmit": {
            "max-value": 15,
@@ -2875,7 +2875,7 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
              "current-value": 3
            },
            "probing-rate": {
-             "current-value": 5
+             "current-value": 15
            },
            "max-retransmit": {
              "current-value": 3
