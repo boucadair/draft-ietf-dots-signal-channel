@@ -2731,10 +2731,10 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
           </list></t>
 
         <t>The DOTS Heartbeat mechanism uses non-confirmable POST requests
-        (<xref target="hbreq"></xref>) with an expected 2.04 response (<xref
-        target="hbrep"></xref>). The POST request used for DOTS heartbeat MUST
-        NOT have a 'cuid', 'cdid,' or 'mid' Uri-Path. Such POST requests MUST
-        NOT be relayed by DOTS gateways. </t>
+        (<xref target="hbreq"></xref>) with an expected 2.04 (Changed)
+        Response Code (<xref target="hbrep"></xref>). The POST request used
+        for DOTS heartbeat MUST NOT have a 'cuid', 'cdid,' or 'mid' Uri-Path.
+        Such POST requests MUST NOT be relayed by DOTS gateways. </t>
 
         <t><figure anchor="hbreq"
             title="POST to Check Peer DOTS Agent is Responding">
@@ -2745,7 +2745,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
 ]]></artwork>
           </figure></t>
 
-        <t><figure anchor="hbrep" title="Response to a Heartbeat Request">
+        <t><figure anchor="hbrep" title="Response to a DOTS Heartbeat Request">
             <artwork><![CDATA[     Header: (Code=2.04)
 
 ]]></artwork>

@@ -3163,10 +3163,10 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
       DOTS heartbeat requests.
 
    The DOTS Heartbeat mechanism uses non-confirmable POST requests
-   (Figure 27) with an expected 2.04 response (Figure 28).  The POST
-   request used for DOTS heartbeat MUST NOT have a 'cuid', 'cdid,' or
-   'mid' Uri-Path.  Such POST requests MUST NOT be relayed by DOTS
-   gateways.
+   (Figure 27) with an expected 2.04 (Changed) Response Code
+   (Figure 28).  The POST request used for DOTS heartbeat MUST NOT have
+   a 'cuid', 'cdid,' or 'mid' Uri-Path.  Such POST requests MUST NOT be
+   relayed by DOTS gateways.
 
         Header: POST (Code=0.02)
         Uri-Path: ".well-known"
@@ -3178,7 +3178,7 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
         Header: (Code=2.04)
 
 
-                Figure 28: Response to a Heartbeat Request
+              Figure 28: Response to a DOTS Heartbeat Request
 
    DOTS servers MAY trigger their heartbeat requests immediately after
    receiving heartbeat probes from peer DOTS clients.  As a reminder, it
