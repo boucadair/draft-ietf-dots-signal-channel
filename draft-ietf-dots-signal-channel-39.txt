@@ -5291,8 +5291,8 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
    "description": Replicates the description from the registry.
 
-   "reference":   Replicates the reference from the registry and add the
-                  title of the document.
+   "reference":   Replicates the reference from the registry and adds
+                  the title of the document.
 
    When the iana-dots-signal-channel YANG module is updated, a new
    "revision" statement must be added in front of the existing revision

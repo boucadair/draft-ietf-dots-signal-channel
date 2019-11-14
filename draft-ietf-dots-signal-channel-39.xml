@@ -4666,7 +4666,7 @@ Note that:
             from the registry.</t>
 
             <t hangText="&quot;reference&quot;:">Replicates the reference from
-            the registry and add the title of the document.</t>
+            the registry and adds the title of the document.</t>
           </list></t>
 
         <t>When the iana-dots-signal-channel YANG module is updated, a new
