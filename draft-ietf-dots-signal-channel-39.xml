@@ -2188,11 +2188,11 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
                   disconnected. <vspace blankLines="1" />This is an optional
                   attribute.</t>
 
-                  <t hangText="probing-rate:">The data rate that must not be
-                  exceeded by a DOTS agent in sending to a peer DOTS agent
-                  that does not respond (referred to as PROBING_RATE parameter
-                  in CoAP). <vspace blankLines="1" />This is an optional
-                  attribute.</t>
+                  <t hangText="probing-rate:">The average data rate that must
+                  not be exceeded by a DOTS agent in sending to a peer DOTS
+                  agent that does not respond (referred to as PROBING_RATE
+                  parameter in CoAP). <vspace blankLines="1" />This is an
+                  optional attribute.</t>
 
                   <t hangText="max-retransmit: ">Maximum number of
                   retransmissions for a message (referred to as MAX_RETRANSMIT
@@ -2748,11 +2748,11 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
      Uri-Path: "hb"  
      Content-Format: "application/dots+cbor"
 
-    {
-      "ietf-dots-signal-channel:heartbeat": {
-         "peer-hb-status": true;       
-       }
-    }
+     {
+       "ietf-dots-signal-channel:heartbeat": {
+          "peer-hb-status": true;       
+        }
+     }
 ]]></artwork>
           </figure></t>
 
@@ -2760,12 +2760,12 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
         'false') to indicates that a DOTS agent is (or not) receiving
         heartbeat messages from its peer in the last (2 * heartbeat-interval)
         period. Such information can be used by a peer DOTS agent to detect or
-        confirm connectivity issues and react accordingly. For example, if the
+        confirm connectivity issues and react accordingly. For example, if a
         DOTS client receives 2.04 response for its heartbeat messages but no
-        server-initiated heartbeat messages, the DOTS client set
-        'peer-hb-status" to 'false'. The DOTS server will need then to try
+        server-initiated heartbeat messages, the DOTS client sets
+        'peer-hb-status' to 'false'. The DOTS server will need then to try
         another strategy for sending the heartbeats (e.g., adjust the
-        heartbeat interval, send a server-initiated heartbeat immediately
+        heartbeat interval or send a server-initiated heartbeat immediately
         after receiving a client-initiated heartbeat message).</t>
 
         <t><figure anchor="hbrep" title="Response to a DOTS Heartbeat Request">
@@ -3792,7 +3792,7 @@ module ietf-dots-signal-channel {
    |                      | inet:       |     |               |        |
    |                      |  ip-address |     | 3 text string | String |
    | probing-rate         | container   |  49 | 5 map         | Object |
-   | peer-hb-status       | boolean     |  4A | 7 bits 20     | False  |
+   | peer-hb-status       | boolean     |  50 | 7 bits 20     | False  |
    |                      |             |     | 7 bits 21     | True   |
    +----------------------+-------------+-----+---------------+--------+
 
@@ -4360,7 +4360,7 @@ Note that:
    | alt-server           |   47  |   3   |    IESG    |   [RFCXXXX]   |
    | alt-server-record    |   48  |   4   |    IESG    |   [RFCXXXX]   |
    | probing-rate         |   49  |   5   |    IESG    |   [RFCXXXX]   |
-   | peer-hb-status       |   4A  |   7   |    IESG    |   [RFCXXXX]   |
+   | peer-hb-status       |   50  |   7   |    IESG    |   [RFCXXXX]   |
    +----------------------+-------+-------+------------+---------------+
 
         Table 6: Initial DOTS Signal Channel CBOR Key Values Registry

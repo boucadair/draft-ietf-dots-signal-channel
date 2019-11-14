@@ -2499,9 +2499,9 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
          This is an optional attribute.
 
-      probing-rate:  The data rate that must not be exceeded by a DOTS
-         agent in sending to a peer DOTS agent that does not respond
-         (referred to as PROBING_RATE parameter in CoAP).
+      probing-rate:  The average data rate that must not be exceeded by
+         a DOTS agent in sending to a peer DOTS agent that does not
+         respond (referred to as PROBING_RATE parameter in CoAP).
 
          This is an optional attribute.
 
@@ -3174,11 +3174,11 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
         Uri-Path: "hb"
         Content-Format: "application/dots+cbor"
 
-       {
-         "ietf-dots-signal-channel:heartbeat": {
-            "peer-hb-status": true;
-          }
-       }
+        {
+          "ietf-dots-signal-channel:heartbeat": {
+             "peer-hb-status": true;
+           }
+        }
 
            Figure 27: PUT to Check Peer DOTS Agent is Responding
 
@@ -3195,11 +3195,11 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
 
    or confirm connectivity issues and react accordingly.  For example,
-   if the DOTS client receives 2.04 response for its heartbeat messages
-   but no server-initiated heartbeat messages, the DOTS client set
-   'peer-hb-status" to 'false'.  The DOTS server will need then to try
+   if a DOTS client receives 2.04 response for its heartbeat messages
+   but no server-initiated heartbeat messages, the DOTS client sets
+   'peer-hb-status' to 'false'.  The DOTS server will need then to try
    another strategy for sending the heartbeats (e.g., adjust the
-   heartbeat interval, send a server-initiated heartbeat immediately
+   heartbeat interval or send a server-initiated heartbeat immediately
    after receiving a client-initiated heartbeat message).
 
         Header: (Code=2.04)
@@ -4377,7 +4377,7 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
    |                      | inet:       |     |               |        |
    |                      |  ip-address |     | 3 text string | String |
    | probing-rate         | container   |  49 | 5 map         | Object |
-   | peer-hb-status       | boolean     |  4A | 7 bits 20     | False  |
+   | peer-hb-status       | boolean     |  50 | 7 bits 20     | False  |
    |                      |             |     | 7 bits 21     | True   |
    +----------------------+-------------+-----+---------------+--------+
 
@@ -4974,7 +4974,7 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
    | alt-server           |   47  |   3   |    IESG    |   [RFCXXXX]   |
    | alt-server-record    |   48  |   4   |    IESG    |   [RFCXXXX]   |
    | probing-rate         |   49  |   5   |    IESG    |   [RFCXXXX]   |
-   | peer-hb-status       |   4A  |   7   |    IESG    |   [RFCXXXX]   |
+   | peer-hb-status       |   50  |   7   |    IESG    |   [RFCXXXX]   |
    +----------------------+-------+-------+------------+---------------+
 
         Table 6: Initial DOTS Signal Channel CBOR Key Values Registry
