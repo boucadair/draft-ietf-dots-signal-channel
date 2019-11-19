@@ -1759,7 +1759,8 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
             explicitly deregister itself by issuing a GET request that has the
             Token field set to the token of the observation to be cancelled
             and includes an Observe Option with the value set to '1'
-            (deregister). The latter is RECOMMENDED.</t>
+            (deregister). The latter is more deterministic and thus is
+            RECOMMENDED.</t>
 
             <t><xref target="Figure6"></xref> shows an example of a DOTS
             client requesting a DOTS server to send notifications related to a
@@ -2013,6 +2014,11 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
             indicates the maximum number of consecutive heartbeat messages for
             which a DOTS agent did not receive a response before concluding
             that the session is disconnected or defunct.</t>
+
+            <t>Acceptable probing rate (probing-rate): This parameter
+            indicates the average data rate that must not be exceeded by a
+            DOTS agent in sending to a peer DOTS agent that does not respond.
+            </t>
 
             <t>Acceptable signal loss ratio: Maximum retransmissions,
             retransmission timeout value, and other message transmission
@@ -2531,12 +2537,12 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
               (Changed) MUST be returned in the response.</t>
 
               <t>If any of the 'heartbeat-interval', 'missing-hb-allowed',
-              'max-retransmit', 'target-protocol', 'ack-timeout', and
-              'ack-random-factor' attribute values are not acceptable to the
-              DOTS server, 4.22 (Unprocessable Entity) MUST be returned in the
-              response. Upon receipt of this error code, the DOTS client
-              SHOULD retrieve the maximum and minimum attribute values
-              acceptable to the DOTS server (<xref
+              'probing-rate', 'max-retransmit', 'target-protocol',
+              'ack-timeout', and 'ack-random-factor' attribute values are not
+              acceptable to the DOTS server, 4.22 (Unprocessable Entity) MUST
+              be returned in the response. Upon receipt of this error code,
+              the DOTS client SHOULD retrieve the maximum and minimum
+              attribute values acceptable to the DOTS server (<xref
               target="discovery"></xref>).<vspace blankLines="1" />The DOTS
               client may re-try and send the PUT request with updated
               attribute values acceptable to the DOTS server.</t>
@@ -2744,9 +2750,9 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
         (<xref target="hbreq"></xref>) with an expected 2.04 (Changed)
         Response Code (<xref target="hbrep"></xref>). This procedure occurs
         between a DOTS agent and its immediate peer DOTS agent. As such, this
-        POST request MUST NOT be relayed by a DOTS gateway. The PUT request
+        PUT request MUST NOT be relayed by a DOTS gateway. The PUT request
         used for DOTS heartbeat MUST NOT have a 'cuid', 'cdid,' or 'mid'
-        Uri-Path. </t>
+        Uri-Path.</t>
 
         <t><figure anchor="hbreq"
             title="PUT to Check Peer DOTS Agent is Responding">
