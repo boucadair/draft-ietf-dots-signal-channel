@@ -134,7 +134,7 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
    7.  (D)TLS Protocol Profile and Performance Considerations  . . .  79
      7.1.  (D)TLS Protocol Profile . . . . . . . . . . . . . . . . .  79
      7.2.  (D)TLS 1.3 Considerations . . . . . . . . . . . . . . . .  81
-     7.3.  DTLS MTU and Fragmentation  . . . . . . . . . . . . . . .  82
+     7.3.  DTLS MTU and Fragmentation  . . . . . . . . . . . . . . .  83
    8.  Mutual Authentication of DOTS Agents & Authorization of DOTS
        Clients . . . . . . . . . . . . . . . . . . . . . . . . . . .  83
    9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  85
@@ -4376,8 +4376,10 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
    | alt-server-record    | leaf-list   |  48 | 4 array       | Array  |
    |                      | inet:       |     |               |        |
    |                      |  ip-address |     | 3 text string | String |
-   | probing-rate         | container   |  49 | 5 map         | Object |
-   | peer-hb-status       | boolean     |  50 | 7 bits 20     | False  |
+   | ietf-dots-signal-cha |             |     |               |        |
+   | nnel:heartbeat       | container   |  49 | 5 map         | Object |
+   | probing-rate         | container   |  50 | 5 map         | Object |
+   | peer-hb-status       | boolean     |  51 | 7 bits 20     | False  |
    |                      |             |     | 7 bits 21     | True   |
    +----------------------+-------------+-----+---------------+--------+
 
@@ -4415,9 +4417,7 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
    in the presented identifier.  DOTS doesn't use URI-IDs for server
    identity verification.
 
-   A key challenge to deploying DOTS is the provisioning of DOTS
-   clients, including the distribution of keying material to DOTS
-   clients to enable the required mutual authentication of DOTS agents.
+
 
 
 
@@ -4426,6 +4426,9 @@ Reddy, et al.             Expires May 22, 2020                 [Page 79]
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
 
+   A key challenge to deploying DOTS is the provisioning of DOTS
+   clients, including the distribution of keying material to DOTS
+   clients to enable the required mutual authentication of DOTS agents.
    Enrollment over Secure Transport (EST) [RFC7030] defines a method of
    certificate enrollment by which domains operating DOTS servers may
    provide DOTS clients with all the necessary cryptographic keying
@@ -4472,9 +4475,6 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
       the server's certificate and certificate chain if the client has
       cached that information from a previous TLS handshake.
 
-   Compared to UDP, DOTS signal channel over TCP requires an additional
-   round-trip time (RTT) of latency to establish a TCP connection.  DOTS
-
 
 
 Reddy, et al.             Expires May 22, 2020                 [Page 80]
@@ -4482,6 +4482,8 @@ Reddy, et al.             Expires May 22, 2020                 [Page 80]
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
 
+   Compared to UDP, DOTS signal channel over TCP requires an additional
+   round-trip time (RTT) of latency to establish a TCP connection.  DOTS
    implementations are encouraged to implement TCP Fast Open [RFC7413]
    to eliminate that RTT.
 
@@ -4528,8 +4530,6 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
       in each CoAP request.  The DOTS server(s) MUST use the Message ID
       and the Token in the DOTS signal channel message to detect replay
       of early data at the application layer, and accept 0-RTT data at
-      most once from the same DOTS client.  This anti-replay defense
-      requires sharing the Message ID and the Token in the 0-RTT data
 
 
 
@@ -4538,6 +4538,8 @@ Reddy, et al.             Expires May 22, 2020                 [Page 81]
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
 
+      most once from the same DOTS client.  This anti-replay defense
+      requires sharing the Message ID and the Token in the 0-RTT data
       between DOTS servers in the DOTS server domain.  DOTS servers do
       not rely on transport coordinates to identify DOTS peers.  As
       specified in Section 4.4.1, DOTS servers couple the DOTS signal
@@ -4580,12 +4582,10 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
            Figure 29: A Simplified TLS 1.3 Handshake with 0-RTT
 
-7.3.  DTLS MTU and Fragmentation
 
-   To avoid DOTS signal message fragmentation and the subsequent
-   decreased probability of message delivery, DOTS agents MUST ensure
-   that the DTLS record fit within a single datagram.  As a reminder,
-   DTLS handles fragmentation and reassembly only for handshake messages
+
+
+
 
 
 
@@ -4594,6 +4594,12 @@ Reddy, et al.             Expires May 22, 2020                 [Page 82]
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
 
+7.3.  DTLS MTU and Fragmentation
+
+   To avoid DOTS signal message fragmentation and the subsequent
+   decreased probability of message delivery, DOTS agents MUST ensure
+   that the DTLS record fit within a single datagram.  As a reminder,
+   DTLS handles fragmentation and reassembly only for handshake messages
    and not for the application data (Section 4.1.1 of [RFC6347]).  If
    the PMTU cannot be discovered, DOTS agents MUST assume a PMTU of 1280
    bytes, as IPv6 requires that every link in the Internet have an MTU
@@ -4636,12 +4642,6 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
    The DOTS server should support certificate-based client
    authentication.  The DOTS client should respond to the DOTS server's
-   TLS CertificateRequest message with the PKIX certificate held by the
-   DOTS client.  DOTS client certificate validation must be performed as
-   per [RFC5280] and the DOTS client certificate must conform to the
-   [RFC5280] certificate profile.  If a DOTS client does not support TLS
-   client certificate authentication, it must support pre-shared key
-   based or raw public key based client authentication.
 
 
 
@@ -4649,6 +4649,13 @@ Reddy, et al.             Expires May 22, 2020                 [Page 83]
 
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
+
+   TLS CertificateRequest message with the PKIX certificate held by the
+   DOTS client.  DOTS client certificate validation must be performed as
+   per [RFC5280] and the DOTS client certificate must conform to the
+   [RFC5280] certificate profile.  If a DOTS client does not support TLS
+   client certificate authentication, it must support pre-shared key
+   based or raw public key based client authentication.
 
    +---------------------------------------------+
    |       example.com domain       +---------+  |
@@ -4691,13 +4698,6 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
    server will only allow a DOTS gateway with a certificate for a
    particular domain to request mitigation for that domain.  In
    reference to Figure 30, the DOTS server only allows the DOTS gateway
-   to request mitigation for 'example.com' domain and not for other
-   domains.
-
-
-
-
-
 
 
 
@@ -4705,6 +4705,9 @@ Reddy, et al.             Expires May 22, 2020                 [Page 84]
 
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
+
+   to request mitigation for 'example.com' domain and not for other
+   domains.
 
 9.  IANA Considerations
 
@@ -4751,9 +4754,6 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
       of [RFCXXXX]
    o  Interoperability considerations: N/A
    o  Published specification: [RFCXXXX]
-   o  Applications that use this media type: DOTS agents sending DOTS
-      messages over CoAP over (D)TLS.
-   o  Fragment identifier considerations: N/A
 
 
 
@@ -4762,6 +4762,9 @@ Reddy, et al.             Expires May 22, 2020                 [Page 85]
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
 
+   o  Applications that use this media type: DOTS agents sending DOTS
+      messages over CoAP over (D)TLS.
+   o  Fragment identifier considerations: N/A
    o  Additional information:
 
          Magic number(s): N/A
@@ -4806,9 +4809,6 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
    o  Semantics: DDoS Open Threat Signaling (DOTS) signal channel
       object, as defined in [RFCXXXX]
    o  Description of Semantics: [RFCXXXX]
-
-
-
 
 
 
@@ -4973,11 +4973,11 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
    | nel:redirected-signal|       |       |            |               |
    | alt-server           |   47  |   3   |    IESG    |   [RFCXXXX]   |
    | alt-server-record    |   48  |   4   |    IESG    |   [RFCXXXX]   |
-   | probing-rate         |   49  |   5   |    IESG    |   [RFCXXXX]   |
-   | peer-hb-status       |   50  |   7   |    IESG    |   [RFCXXXX]   |
+   | ietf-dots-signal-chan|   49  |   5   |    IESG    |   [RFCXXXX]   |
+   | nel:heartbeat        |       |       |            |               |
+   | probing-rate         |   50  |   5   |    IESG    |   [RFCXXXX]   |
+   | peer-hb-status       |   51  |   7   |    IESG    |   [RFCXXXX]   |
    +----------------------+-------+-------+------------+---------------+
-
-        Table 6: Initial DOTS Signal Channel CBOR Key Values Registry
 
 
 
@@ -4985,6 +4985,8 @@ Reddy, et al.             Expires May 22, 2020                 [Page 89]
 
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
+
+        Table 6: Initial DOTS Signal Channel CBOR Key Values Registry
 
 9.6.2.  Status Codes Sub-Registry
 
@@ -5032,8 +5034,6 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
    |   4 | attack-exceeded-capability       | Attack has   | [RFCXXXX] |
    |     |                                  | exceeded the |           |
    |     |                                  | mitigation   |           |
-   |     |                                  | provider     |           |
-   |     |                                  | capability.  |           |
 
 
 
@@ -5042,6 +5042,8 @@ Reddy, et al.             Expires May 22, 2020                 [Page 90]
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
 
+   |     |                                  | provider     |           |
+   |     |                                  | capability.  |           |
    |   5 | dots-client-withdrawn-mitigation | DOTS client  | [RFCXXXX] |
    |     |                                  | has          |           |
    |     |                                  | withdrawn    |           |
@@ -5084,8 +5086,6 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
    are used as valid values of 'conflict-status' parameter.
 
    The registry is initially populated with the following values:
-
-
 
 
 

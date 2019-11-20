@@ -3805,8 +3805,10 @@ module ietf-dots-signal-channel {
    | alt-server-record    | leaf-list   |  48 | 4 array       | Array  |
    |                      | inet:       |     |               |        |
    |                      |  ip-address |     | 3 text string | String |
-   | probing-rate         | container   |  49 | 5 map         | Object |
-   | peer-hb-status       | boolean     |  50 | 7 bits 20     | False  |
+   | ietf-dots-signal-cha |             |     |               |        |
+   | nnel:heartbeat       | container   |  49 | 5 map         | Object |
+   | probing-rate         | container   |  50 | 5 map         | Object |
+   | peer-hb-status       | boolean     |  51 | 7 bits 20     | False  |
    |                      |             |     | 7 bits 21     | True   |
    +----------------------+-------------+-----+---------------+--------+
 
@@ -4373,8 +4375,10 @@ Note that:
    | nel:redirected-signal|       |       |            |               |
    | alt-server           |   47  |   3   |    IESG    |   [RFCXXXX]   |
    | alt-server-record    |   48  |   4   |    IESG    |   [RFCXXXX]   |
-   | probing-rate         |   49  |   5   |    IESG    |   [RFCXXXX]   |
-   | peer-hb-status       |   50  |   7   |    IESG    |   [RFCXXXX]   |
+   | ietf-dots-signal-chan|   49  |   5   |    IESG    |   [RFCXXXX]   |
+   | nel:heartbeat        |       |       |            |               |
+   | probing-rate         |   50  |   5   |    IESG    |   [RFCXXXX]   |
+   | peer-hb-status       |   51  |   7   |    IESG    |   [RFCXXXX]   |
    +----------------------+-------+-------+------------+---------------+
 
         Table 6: Initial DOTS Signal Channel CBOR Key Values Registry
