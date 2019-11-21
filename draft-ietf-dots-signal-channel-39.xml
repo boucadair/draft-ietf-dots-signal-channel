@@ -2240,14 +2240,14 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
         "current-value": 30
       },
       "missing-hb-allowed": {
-        "max-value": 9,
+        "max-value": 20,
         "min-value": 3,
-        "current-value": 5
+        "current-value": 15
       },
       "probing-rate": {
-        "max-value": 10,
-        "min-value": 1,
-        "current-value": 5
+        "max-value": 20,
+        "min-value": 5,
+        "current-value": 15
       },
       "max-retransmit": {
         "max-value": 15,
@@ -2272,14 +2272,14 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
         "current-value": 30
       },
       "missing-hb-allowed": {
-        "max-value": 9,
+        "max-value": 20,
         "min-value": 3,
-        "current-value": 5
+        "current-value": 15
       },
       "probing-rate": {
-        "max-value": 10,
-        "min-value": 1,
-        "current-value": 5
+        "max-value": 20,
+        "min-value": 5,
+        "current-value": 15
       },
       "max-retransmit": {
         "max-value": 15,
@@ -2466,7 +2466,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
           <t><xref target="Figure14"></xref> shows a PUT request example to
           convey the configuration parameters for the DOTS signal channel. In
           this example, the heartbeat mechanism is disabled when no mitigation
-          is active, while the heartbeat interval is set to '91' when a
+          is active, while the heartbeat interval is set to '30' when a
           mitigation is active.</t>
 
           <t><figure anchor="Figure14"
@@ -2482,13 +2482,13 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
     "ietf-dots-signal-channel:signal-config": {
       "mitigating-config": {
         "heartbeat-interval": {
-          "current-value": 91
+          "current-value": 30
         },
         "missing-hb-allowed": {
-          "current-value": 3
+          "current-value": 15
         },
         "probing-rate": {
-          "current-value": 5
+          "current-value": 15
         },
         "max-retransmit": {
           "current-value": 3
@@ -3529,6 +3529,7 @@ module ietf-dots-signal-channel {
       leaf current-value {
         type uint16;
         units "byte/second";
+        default "5";
         description
           "Current probing-rate value.";
       }
@@ -3806,7 +3807,7 @@ module ietf-dots-signal-channel {
    |                      | inet:       |     |               |        |
    |                      |  ip-address |     | 3 text string | String |
    | ietf-dots-signal-cha |             |     |               |        |
-   | nnel:heartbeat       | container   |  49 | 5 map         | Object |
+   |  nnel:heartbeat      | container   |  49 | 5 map         | Object |
    | probing-rate         | container   |  50 | 5 map         | Object |
    | peer-hb-status       | boolean     |  51 | 7 bits 20     | False  |
    |                      |             |     | 7 bits 21     | True   |
@@ -4376,7 +4377,7 @@ Note that:
    | alt-server           |   47  |   3   |    IESG    |   [RFCXXXX]   |
    | alt-server-record    |   48  |   4   |    IESG    |   [RFCXXXX]   |
    | ietf-dots-signal-chan|   49  |   5   |    IESG    |   [RFCXXXX]   |
-   | nel:heartbeat        |       |       |            |               |
+   |  nel:heartbeat       |       |       |            |               |
    | probing-rate         |   50  |   5   |    IESG    |   [RFCXXXX]   |
    | peer-hb-status       |   51  |   7   |    IESG    |   [RFCXXXX]   |
    +----------------------+-------+-------+------------+---------------+
