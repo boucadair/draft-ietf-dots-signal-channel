@@ -157,7 +157,7 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
    12. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  98
    13. References  . . . . . . . . . . . . . . . . . . . . . . . . .  98
      13.1.  Normative References . . . . . . . . . . . . . . . . . .  98
-     13.2.  Informative References . . . . . . . . . . . . . . . . . 101
+     13.2.  Informative References . . . . . . . . . . . . . . . . . 102
    Appendix A.  CUID Generation  . . . . . . . . . . . . . . . . . . 106
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . 106
 
@@ -3177,7 +3177,7 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
         {
           "ietf-dots-signal-channel:heartbeat": {
-             "peer-hb-status": true;
+             "peer-hb-status": true
            }
         }
 
@@ -5454,6 +5454,9 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
    Thanks to Alexey Melnikov, Adam Roach, Suresh Krishnan, Mirja
    Kuehlewind, and Alissa Cooper for the review.
 
+   Thanks to Carsten Bormann for his review of the DOTS heartbeat
+   mechanism.
+
 13.  References
 
 13.1.  Normative References
@@ -5477,9 +5480,6 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-   [RFC3688]  Mealling, M., "The IETF XML Registry", BCP 81, RFC 3688,
-              DOI 10.17487/RFC3688, January 2004,
-              <https://www.rfc-editor.org/info/rfc3688>.
 
 
 
@@ -5489,6 +5489,10 @@ Reddy, et al.             Expires May 23, 2020                 [Page 98]
 
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
+
+   [RFC3688]  Mealling, M., "The IETF XML Registry", BCP 81, RFC 3688,
+              DOI 10.17487/RFC3688, January 2004,
+              <https://www.rfc-editor.org/info/rfc3688>.
 
    [RFC3986]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
               Resource Identifier (URI): Generic Syntax", STD 66,
@@ -5530,12 +5534,8 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
               DOI 10.17487/RFC6066, January 2011,
               <https://www.rfc-editor.org/info/rfc6066>.
 
-   [RFC6125]  Saint-Andre, P. and J. Hodges, "Representation and
-              Verification of Domain-Based Application Service Identity
-              within Internet Public Key Infrastructure Using X.509
-              (PKIX) Certificates in the Context of Transport Layer
-              Security (TLS)", RFC 6125, DOI 10.17487/RFC6125, March
-              2011, <https://www.rfc-editor.org/info/rfc6125>.
+
+
 
 
 
@@ -5545,6 +5545,13 @@ Reddy, et al.             Expires May 23, 2020                 [Page 99]
 
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
+
+   [RFC6125]  Saint-Andre, P. and J. Hodges, "Representation and
+              Verification of Domain-Based Application Service Identity
+              within Internet Public Key Infrastructure Using X.509
+              (PKIX) Certificates in the Context of Transport Layer
+              Security (TLS)", RFC 6125, DOI 10.17487/RFC6125, March
+              2011, <https://www.rfc-editor.org/info/rfc6125>.
 
    [RFC6347]  Rescorla, E. and N. Modadugu, "Datagram Transport Layer
               Security Version 1.2", RFC 6347, DOI 10.17487/RFC6347,
@@ -5585,14 +5592,7 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
               DOI 10.17487/RFC7918, August 2016,
               <https://www.rfc-editor.org/info/rfc7918>.
 
-   [RFC7924]  Santesson, S. and H. Tschofenig, "Transport Layer Security
-              (TLS) Cached Information Extension", RFC 7924,
-              DOI 10.17487/RFC7924, July 2016,
-              <https://www.rfc-editor.org/info/rfc7924>.
 
-   [RFC7950]  Bjorklund, M., Ed., "The YANG 1.1 Data Modeling Language",
-              RFC 7950, DOI 10.17487/RFC7950, August 2016,
-              <https://www.rfc-editor.org/info/rfc7950>.
 
 
 
@@ -5601,6 +5601,15 @@ Reddy, et al.             Expires May 23, 2020                [Page 100]
 
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
+
+   [RFC7924]  Santesson, S. and H. Tschofenig, "Transport Layer Security
+              (TLS) Cached Information Extension", RFC 7924,
+              DOI 10.17487/RFC7924, July 2016,
+              <https://www.rfc-editor.org/info/rfc7924>.
+
+   [RFC7950]  Bjorklund, M., Ed., "The YANG 1.1 Data Modeling Language",
+              RFC 7950, DOI 10.17487/RFC7950, August 2016,
+              <https://www.rfc-editor.org/info/rfc7950>.
 
    [RFC7959]  Bormann, C. and Z. Shelby, Ed., "Block-Wise Transfers in
               the Constrained Application Protocol (CoAP)", RFC 7959,
@@ -5640,15 +5649,6 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
               <https://www.rfc-editor.org/info/rfc8446>.
 
-13.2.  Informative References
-
-   [I-D.boucadair-dots-earlydata]
-              Boucadair, M. and R. K, "Using Early Data in DOTS", draft-
-              boucadair-dots-earlydata-00 (work in progress), January
-              2019.
-
-
-
 
 
 
@@ -5657,6 +5657,13 @@ Reddy, et al.             Expires May 23, 2020                [Page 101]
 
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
+
+13.2.  Informative References
+
+   [I-D.boucadair-dots-earlydata]
+              Boucadair, M. and R. K, "Using Early Data in DOTS", draft-
+              boucadair-dots-earlydata-00 (work in progress), January
+              2019.
 
    [I-D.ietf-core-comi]
               Veillette, M., Stok, P., Pelov, A., Bierman, A., and I.
@@ -5697,13 +5704,6 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
               Signaling", draft-ietf-dots-use-cases-20 (work in
               progress), September 2019.
 
-   [I-D.ietf-tls-dtls13]
-              Rescorla, E., Tschofenig, H., and N. Modadugu, "The
-              Datagram Transport Layer Security (DTLS) Protocol Version
-              1.3", draft-ietf-tls-dtls13-33 (work in progress), October
-              2019.
-
-
 
 
 
@@ -5713,6 +5713,12 @@ Reddy, et al.             Expires May 23, 2020                [Page 102]
 
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
+
+   [I-D.ietf-tls-dtls13]
+              Rescorla, E., Tschofenig, H., and N. Modadugu, "The
+              Datagram Transport Layer Security (DTLS) Protocol Version
+              1.3", draft-ietf-tls-dtls13-33 (work in progress), October
+              2019.
 
    [IANA.CBOR.Tags]
               IANA, "Concise Binary Object Representation (CBOR) Tags",
@@ -5757,18 +5763,17 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
               DOI 10.17487/RFC4732, December 2006,
               <https://www.rfc-editor.org/info/rfc4732>.
 
-   [RFC4787]  Audet, F., Ed. and C. Jennings, "Network Address
-              Translation (NAT) Behavioral Requirements for Unicast
-              UDP", BCP 127, RFC 4787, DOI 10.17487/RFC4787, January
-              2007, <https://www.rfc-editor.org/info/rfc4787>.
-
-
 
 
 Reddy, et al.             Expires May 23, 2020                [Page 103]
 
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
+
+   [RFC4787]  Audet, F., Ed. and C. Jennings, "Network Address
+              Translation (NAT) Behavioral Requirements for Unicast
+              UDP", BCP 127, RFC 4787, DOI 10.17487/RFC4787, January
+              2007, <https://www.rfc-editor.org/info/rfc4787>.
 
    [RFC4960]  Stewart, R., Ed., "Stream Control Transmission Protocol",
               RFC 4960, DOI 10.17487/RFC4960, September 2007,
@@ -5811,11 +5816,6 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
               (IPv6)", RFC 6724, DOI 10.17487/RFC6724, September 2012,
               <https://www.rfc-editor.org/info/rfc6724>.
 
-   [RFC6838]  Freed, N., Klensin, J., and T. Hansen, "Media Type
-              Specifications and Registration Procedures", BCP 13,
-              RFC 6838, DOI 10.17487/RFC6838, January 2013,
-              <https://www.rfc-editor.org/info/rfc6838>.
-
 
 
 
@@ -5825,6 +5825,11 @@ Reddy, et al.             Expires May 23, 2020                [Page 104]
 
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
+
+   [RFC6838]  Freed, N., Klensin, J., and T. Hansen, "Media Type
+              Specifications and Registration Procedures", BCP 13,
+              RFC 6838, DOI 10.17487/RFC6838, January 2013,
+              <https://www.rfc-editor.org/info/rfc6838>.
 
    [RFC6887]  Wing, D., Ed., Cheshire, S., Boucadair, M., Penno, R., and
               P. Selkirk, "Port Control Protocol (PCP)", RFC 6887,
@@ -5869,11 +5874,6 @@ Internet-Draft        DOTS Signal Channel Protocol         November 2019
               BCP 215, RFC 8340, DOI 10.17487/RFC8340, March 2018,
               <https://www.rfc-editor.org/info/rfc8340>.
 
-   [RFC8484]  Hoffman, P. and P. McManus, "DNS Queries over HTTPS
-              (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
-              <https://www.rfc-editor.org/info/rfc8484>.
-
-
 
 
 
@@ -5881,6 +5881,10 @@ Reddy, et al.             Expires May 23, 2020                [Page 105]
 
 Internet-Draft        DOTS Signal Channel Protocol         November 2019
 
+
+   [RFC8484]  Hoffman, P. and P. McManus, "DNS Queries over HTTPS
+              (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
+              <https://www.rfc-editor.org/info/rfc8484>.
 
    [RFC8499]  Hoffman, P., Sullivan, A., and K. Fujiwara, "DNS
               Terminology", BCP 219, RFC 8499, DOI 10.17487/RFC8499,
@@ -5926,10 +5930,6 @@ Authors' Addresses
    France
 
    Email: mohamed.boucadair@orange.com
-
-
-
-
 
 
 

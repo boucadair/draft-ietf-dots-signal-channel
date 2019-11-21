@@ -2764,7 +2764,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
 
      {
        "ietf-dots-signal-channel:heartbeat": {
-          "peer-hb-status": true;       
+          "peer-hb-status": true       
         }
      }
 ]]></artwork>
@@ -4823,6 +4823,9 @@ Note that:
 
       <t>Thanks to Alexey Melnikov, Adam Roach, Suresh Krishnan, Mirja
       K&uuml;hlewind, and Alissa Cooper for the review.</t>
+
+      <t>Thanks to Carsten Bormann for his review of the DOTS heartbeat
+      mechanism. </t>
     </section>
   </middle>
 
