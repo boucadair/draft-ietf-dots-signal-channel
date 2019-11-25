@@ -2879,7 +2879,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
         <t>This document defines the YANG module "ietf-dots-signal-channel"
         (<xref target="yrequest"></xref>), which has the following tree
         structure. A DOTS signal message can be a mitigation, a configuration,
-        or a redirect message.</t>
+        a redirect, or a heartbeat message.</t>
 
         <t><figure>
             <artwork><![CDATA[module: ietf-dots-signal-channel
