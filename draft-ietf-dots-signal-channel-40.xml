@@ -2799,9 +2799,10 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
         'missing-hb-allowed' number of consecutive heartbeat messages, it
         concludes that the DOTS signal channel session is disconnected. The
         DOTS client MUST then try to resume the (D)TLS session. Note
-        that:<list hangIndent="8" style="empty">
-            <t hangText="Note 1:">DOTS relies upon the (D)TLS layer to retry
-            or to start a new (D)TLS session. </t>
+        that:<list style="empty">
+            <t hangText="Note 1:">The (D)TLS layer will then try to resume the
+            (D)TLS session. If the resume fails, the (D)TLS layer will set up
+            a new (D)TLS session. </t>
 
             <t hangText="Note 2:">A new (D)TLS session is used if, for
             example, the DOTS server has lost resumption information.</t>
@@ -2812,7 +2813,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
             target="RFC6347"></xref>. Retransmission timer values are
             implementation-specific.</t>
 
-            <t hangText="Note 4:">If the (D)TLS session cannot be established,
+            <t hangText="Note 4:">If the DOTS session cannot be established,
             then the DOTS client SHOULD retry to establish the DOTS session
             every 300 seconds. A DOTS implementation may use other values. It
             is recommended that DOTS clients support means to alert
