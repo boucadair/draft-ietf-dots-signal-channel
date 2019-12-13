@@ -3219,29 +3219,29 @@ Internet-Draft        DOTS Signal Channel Protocol         December 2019
    DOTS agent does not receive any response from the peer DOTS agent for
    'missing-hb-allowed' number of consecutive heartbeat messages, it
    concludes that the DOTS signal channel session is disconnected.  The
-   DOTS client MUST then try to resume the (D)TLS session.
+   DOTS client MUST then try to resume the (D)TLS session.  Note that:
 
-   Note 1: DOTS relies upon the (D)TLS layer to retry or to start a new
-           (D)TLS session.
+      DOTS relies upon the (D)TLS layer to retry or to start a new
+      (D)TLS session.
 
-   Note 2: A new (D)TLS session is used if, for example, the DOTS server
-           has lost resumption information.
+      A new (D)TLS session is used if, for example, the DOTS server has
+      lost resumption information.
 
-   Note 3: The DTLS layer will try sending ClientHello message multiple
-           times till a timeout is reached as per the procedure
-           specified in Section 4.2.4.1 of [RFC6347].  Retransmission
-           timer values are implementation-specific.
+      The DTLS layer will try sending ClientHello message multiple times
+      till a timeout is reached as per the procedure specified in
+      Section 4.2.4.1 of [RFC6347].  Retransmission timer values are
+      implementation-specific.
 
-   Note 4: If the (D)TLS session cannot be established, then the DOTS
-           client SHOULD retry to establish the DOTS session every 300
-           seconds.  A DOTS implementation may use other values.  It is
-           recommended that DOTS clients support means to alert
-           administrators about the failure to establish a (D)TLS
-           session.
+      If the (D)TLS session cannot be established, then the DOTS client
+      SHOULD retry to establish the DOTS session every 300 seconds.  A
+      DOTS implementation may use other values.  It is recommended that
+      DOTS clients support means to alert administrators about the
+      failure to establish a (D)TLS session.
 
    In case of a massive DDoS attack that saturates the incoming link(s)
    to the DOTS client, all traffic from the DOTS server to the DOTS
    client will likely be dropped, although the DOTS server receives
+   heartbeat requests in addition to DOTS messages sent by the DOTS
 
 
 
@@ -3250,7 +3250,6 @@ Reddy, et al.             Expires June 15, 2020                [Page 58]
 Internet-Draft        DOTS Signal Channel Protocol         December 2019
 
 
-   heartbeat requests in addition to DOTS messages sent by the DOTS
    client.  In this scenario, DOTS clients MUST behave differently to
    handle message transmission and DOTS signal channel session
    liveliness during link saturation:
@@ -3298,6 +3297,7 @@ Internet-Draft        DOTS Signal Channel Protocol         December 2019
    In DOTS over TCP, the sender of a DOTS heartbeat message has to allow
    up to 'heartbeat-interval' seconds when waiting for a heartbeat
    reply.  When a failure is detected by a DOTS client, it proceeds with
+
 
 
 
