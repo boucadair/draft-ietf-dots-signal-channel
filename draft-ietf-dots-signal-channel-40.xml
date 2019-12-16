@@ -2798,7 +2798,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
         DOTS agent does not receive any response from the peer DOTS agent for
         'missing-hb-allowed' number of consecutive heartbeat messages, it
         concludes that the DOTS signal channel session is disconnected. The
-        DOTS client MUST then try to re-establish a DOTS signal channel
+        DOTS client MUST then try to re-establish the DOTS signal channel
         session, preferably by resuming the (D)TLS session.<list style="empty">
             <t hangText="Note 4:">Note: If a new DOTS signal channel session
             cannot be established, the DOTS client SHOULD NOT retry to

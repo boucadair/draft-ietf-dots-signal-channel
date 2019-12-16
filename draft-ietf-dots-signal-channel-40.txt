@@ -3219,7 +3219,7 @@ Internet-Draft        DOTS Signal Channel Protocol         December 2019
    DOTS agent does not receive any response from the peer DOTS agent for
    'missing-hb-allowed' number of consecutive heartbeat messages, it
    concludes that the DOTS signal channel session is disconnected.  The
-   DOTS client MUST then try to re-establish a DOTS signal channel
+   DOTS client MUST then try to re-establish the DOTS signal channel
    session, preferably by resuming the (D)TLS session.
 
       Note: If a new DOTS signal channel session cannot be established,
