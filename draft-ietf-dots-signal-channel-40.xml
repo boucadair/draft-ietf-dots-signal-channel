@@ -2804,9 +2804,9 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
             cannot be established, the DOTS client SHOULD NOT retry to
             establish the DOTS signal channel session more frequently than
             every 300 seconds (5 minutes) and MUST NOT retry more frequently
-            than every 3 seconds. It is recommended that DOTS clients support
-            means to alert administrators about the failure to establish a
-            (D)TLS session.</t>
+            than every 60 seconds (1 minute). It is recommended that DOTS
+            clients support means to alert administrators about the failure to
+            establish a (D)TLS session.</t>
           </list></t>
 
         <t>In case of a massive DDoS attack that saturates the incoming
