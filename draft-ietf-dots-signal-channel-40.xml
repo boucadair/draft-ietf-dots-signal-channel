@@ -496,7 +496,7 @@
 
       <section anchor="uri-path" title="CoAP URIs">
         <t>The DOTS server MUST support the use of the path-prefix of
-        "/.well-known/" as defined in <xref target="RFC5785"></xref> and the
+        "/.well-known/" as defined in <xref target="RFC8615"></xref> and the
         registered name of "dots". Each DOTS operation is indicated by a
         path-suffix that indicates the intended operation. The operation path
         (<xref target="uris"></xref>) is appended to the path-prefix to form
@@ -678,7 +678,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
         SHOULD use an even less aggressive rate whenever possible (case 2 in
         Section 3.1.3 of <xref target="RFC8085"></xref>). Mitigation requests
         MUST NOT be delayed because of checks on probing rate (Section 4.7 of
-        <xref target="RFC7252"></xref>). </t>
+        <xref target="RFC7252"></xref>).</t>
 
         <t>JSON encoding of YANG modelled data <xref target="RFC7951"></xref>
         is used to illustrate the various methods defined in the following
@@ -2831,7 +2831,7 @@ active, the DOTS client SHOULD use a "Connection Attempt Delay"
             parallel, send the mitigation requests over the new DOTS signal
             channel session. This may be handled, for example, by resumption
             of the (D)TLS session or using 0-RTT mode in DTLS 1.3 to piggyback
-            the mitigation request in the ClientHello message. </t>
+            the mitigation request in the ClientHello message.</t>
 
             <t><vspace blankLines="1" />As soon as the link is no longer
             saturated, if traffic from the DOTS server reaches the DOTS client
@@ -4132,7 +4132,7 @@ Note that:
         <t>This document requests IANA to register the 'dots' well-known URI
         (Table 5) in the Well-Known URIs registry
         (https://www.iana.org/assignments/well-known-uris/well-known-uris.xhtml)
-        as defined by <xref target="RFC5785"></xref>:<figure>
+        as defined by <xref target="RFC8615"></xref>:<figure>
             <artwork><![CDATA[   +----------+----------------+---------------------+-----------------+
    | URI      | Change         | Specification       | Related         |
    | suffix   | controller     | document(s)         | information     |
@@ -4856,7 +4856,7 @@ Note that:
 
       <?rfc include="reference.RFC.7641"?>
 
-      <?rfc include="reference.RFC.5785"?>
+      <?rfc include="reference.RFC.8615"?>
 
       <?rfc include="reference.RFC.4279"?>
 
